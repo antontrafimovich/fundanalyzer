@@ -4,9 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:reader": "pnpm --filter reader start",
+    "start:app": "pnpm --filter next-app dev",
+    "start": "concurrently \"pnpm start:app\" \"pnpm start:reader\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
 }
