@@ -2,7 +2,7 @@
 
 import { getCompanies } from "../services/companies";
 
-export async function getTickers(filter: string) {
+export async function getTickers({ filter }: { filter?: string } = {}) {
   console.log("filter", filter);
 
   const data = await getCompanies();

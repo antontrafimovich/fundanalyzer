@@ -26,7 +26,7 @@ export function Search() {
 
   useEffect(() => {
     if (debouncedQuery) {
-      getTickers(debouncedQuery)
+      getTickers({filter: debouncedQuery})
         .then((data) => {
           setResults(data);
         })
