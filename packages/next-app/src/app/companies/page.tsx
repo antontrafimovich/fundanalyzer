@@ -8,7 +8,7 @@ export default async function Page() {
 
   return (
     <ContextProvider>
-      <div className="flex gap-10">
+      <div className="flex gap-10 size-full">
         <ActionSelector />
         <CompaniesTable companies={companies} />
       </div>

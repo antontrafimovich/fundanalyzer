@@ -1,8 +1,10 @@
-'use client'
+"use client";
 
 import { createContext, PropsWithChildren, useState } from "react";
 
-export const RootContext = createContext({});
+export const RootContext = createContext({
+  selectedCompanies: [],
+});
 
 export const ContextProvider = ({ children }: PropsWithChildren<unknown>) => {
   const [selectedCompanies, setSelectedCompanies] = useState([]);

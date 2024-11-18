@@ -1,48 +1,41 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 
-export default function CompaniesTable(props: {
-  companies: { text: string; shortname: string }[];
-}) {
-  //   const { setSelectedCompanies } = useContext(RootContext);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+import { AgGridReact } from "ag-grid-react";
+import { useContext } from "react";
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set(name, value);
+import { Company } from "../../model/company";
+import { RootContext } from "../providers/context-provider";
 
-      return params.toString();
-    },
-    [searchParams]
-  );
+export default function CompaniesTable(props: { companies: Company[] }) {
+  const { setSelectedCompanies } = useContext(RootContext);
+
+  // const columns = [{ field: "text" }, { field: "shortname" }];
+
+  const rowData = props.companies;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Company</th>
-        </tr>
-      </thead>
-      <tbody>
-        {props.companies.map((company) => (
-          <tr
-            key={company.text}
-            onClick={() =>
-              router.push(
-                "/companies" +
-                  "?" +
-                  createQueryString("selected", company.shortname)
-              )
-            }
-          >
-            <td>{company.text}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div
+      className="ag-theme-quartz flex-1 min-w-0 h-full" // applying the Data Grid theme
+    >
+      <AgGridReact
+        rowData={rowData}
+        columnDefs={[
+          { field: "shortname" },
+          { field: "text", filter: true, flex: 1 },
+        ]}
+        rowSelection={{
+          mode: "multiRow",
+          checkboxes: false,
+          headerCheckbox: false,
+          enableClickSelection: true,
+        }}
+        onRowSelected={({ data }) => {
+          setSelectedCompanies([data]);
+        }}
+      />
+    </div>
   );
 }
