@@ -22,8 +22,6 @@ async function fetchAndParseHTML(url) {
 
   // fs.writeFile("./data.html", data);
 
-  console.log(data);
-
   const dom = parse(data);
 
   return dom;
