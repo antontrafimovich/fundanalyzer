@@ -1,1 +1,1 @@
-export type Company = { text: string; shortname: string };
+export type Company = { text: string; shortname: string, ut: string };

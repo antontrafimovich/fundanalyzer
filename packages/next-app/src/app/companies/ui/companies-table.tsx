@@ -33,7 +33,7 @@ export default function CompaniesTable(props: { companies: Company[] }) {
           enableClickSelection: true,
         }}
         onRowSelected={({ data }) => {
-          setSelectedCompanies([data]);
+          setSelectedCompanies([data!]);
         }}
       />
     </div>
