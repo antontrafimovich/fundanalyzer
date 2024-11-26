@@ -60,35 +60,49 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
       "Content-Type": "application/json",
     },
   });
-  const data = await response.json();
+  const data = (await response.json()) as Record<string, any>[];
+  const columns = data.map((row) => row.year);
+
+  const rawRows = data.reduce((acc, row) => {
+    Object.keys(row).forEach((key) => {
+      if (key === "year") return;
+
+      acc[key] = acc[key] || [];
+      acc[key].push(row[key]);
+    });
+
+    return acc;
+  }, {} as Record<string, string[]>);
+
+  const rows = Object.entries(rawRows).map(([key, value]) => [key, ...value]);
 
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Invoice</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Method</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
+          <TableHead key="title">Title</TableHead>
+          {columns.map((column) => {
+            return (
+              <TableHead className="w-[200px]" key={column}>
+                {column}
+              </TableHead>
+            );
+          })}
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">{invoice.invoice}</TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className="text-right">{invoice.totalAmount}</TableCell>
+        {rows.map((row) => (
+          <TableRow key={row[0]}>
+            {row.map((cell, index) => {
+              return (
+                <TableCell key={`${row[0]}_${index}`} className="font-medium">
+                  {cell}
+                </TableCell>
+              );
+            })}
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className="text-right">$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
   );
 }
