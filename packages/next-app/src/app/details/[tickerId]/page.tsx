@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import DataTable from "./data-table/data-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import RevenueChart from "./revenue-chart/revenue-chart";
 
 export default async function Page({
   params,
@@ -12,7 +13,7 @@ export default async function Page({
   await fetch(`http://localhost:4000/${tickerId}`);
 
   return (
-    <div>
+    <div className="flex">
       <Card className="w-1/2 flex flex-col first:basis-auto first:grow-0 first:shrink-0">
         <Suspense fallback={<>Loading Data Table...</>}>
           <CardHeader>
@@ -20,6 +21,17 @@ export default async function Page({
           </CardHeader>
           <CardContent>
             <DataTable tickerId={tickerId} />
+          </CardContent>
+        </Suspense>
+      </Card>
+
+      <Card className="w-1/2 flex flex-col first:basis-auto first:grow-0 first:shrink-0">
+        <Suspense fallback={<>Loading Revenue Chart...</>}>
+          <CardHeader>
+            <CardTitle>Revenue Chart</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RevenueChart tickerId={tickerId} />
           </CardContent>
         </Suspense>
       </Card>
