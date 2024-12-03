@@ -29,12 +29,10 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead key="title" className="w-[400px]">
-            Title
-          </TableHead>
+          <TableHead key="title" className="min-w-[200px]">Title</TableHead>
           {columns.map((column) => {
             return (
-              <TableHead className="w-[200px]" key={column}>
+              <TableHead className="min-w-[100px]" key={column}>
                 {column}
               </TableHead>
             );

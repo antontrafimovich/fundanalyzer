@@ -13,13 +13,13 @@ export default async function Page({
   await fetch(`http://localhost:4000/${tickerId}`);
 
   return (
-    <div className="flex">
+    <div className="flex gap-2 p-4 h-full">
       <Card className="w-1/2 flex flex-col first:basis-auto first:grow-0 first:shrink-0">
         <Suspense fallback={<>Loading Data Table...</>}>
           <CardHeader>
             <CardTitle>Raw Info</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1 min-h-0 pr-1">
             <DataTable tickerId={tickerId} />
           </CardContent>
         </Suspense>

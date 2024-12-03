@@ -25,7 +25,7 @@ export async function getTickerInfo(tickerId: string) {
       const price = item["Kurs"];
       const count = item["Liczba akcji"];
 
-      return { ...result, [year]: { price, count } };
+      return { ...result, [year]: { Kurs: price, "Liczba akcji": count } };
     }, {});
 
     const tickerInfoResult = tickerInfo.map((row, index) => {
