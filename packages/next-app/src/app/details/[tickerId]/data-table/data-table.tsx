@@ -21,7 +21,7 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
     });
 
     return acc;
-  }, {} as Record<string, string[]>);
+  }, {} as Record<string, number[]>);
 
   const rows = Object.entries(rawRows).map(([key, value]) => [key, ...value]);
 
