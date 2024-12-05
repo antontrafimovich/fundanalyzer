@@ -1,44 +1,36 @@
+import { mapTickerInfoApiToDm } from "./ticker-info.api-mapper";
+import { ShareInfoApi, TickerInfoApi } from "./ticker-info.api-model";
+
+async function getTickerProfitAndLossData(
+  tickerId: string
+): Promise<TickerInfoApi[]> {
+  const response = await fetch(`http://localhost:4000/${tickerId}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+
+async function getSharesInfo(tickerId: string): Promise<ShareInfoApi[]> {
+  const response = await fetch(`http://localhost:4000/shares/${tickerId}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+
 export async function getTickerInfo(tickerId: string) {
   try {
-    const tickerInfoPromise = fetch(`http://localhost:4000/${tickerId}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const sharesInfoPromise = fetch(
-      `http://localhost:4000/shares/${tickerId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
     const [tickerInfo, sharesResponse] = await Promise.all([
-      tickerInfoPromise.then((res) => res.json()),
-      sharesInfoPromise.then((res) => res.json()),
+      getTickerProfitAndLossData(tickerId),
+      getSharesInfo(tickerId),
     ]);
 
-    const sharesMap = sharesResponse.reduce((result, item) => {
-      const [year] = item.year.split("/");
-      const price = item["Kurs"];
-      const count = item["Liczba akcji"];
-
-      return { ...result, [year]: { Kurs: price, "Liczba akcji": count } };
-    }, {});
-
-    const tickerInfoResult = tickerInfo.map((row, index) => {
-      const sharesRow =
-        sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
-
-      return {
-        ...sharesRow,
-        ...row,
-      };
-    });
-
-    return tickerInfoResult;
+    return mapTickerInfoApiToDm(tickerInfo, sharesResponse);
   } catch (err) {
     console.error(err);
   }
