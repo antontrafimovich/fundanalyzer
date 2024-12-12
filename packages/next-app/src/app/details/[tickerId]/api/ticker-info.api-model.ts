@@ -8,3 +8,8 @@ export type ShareInfoApi = {
   Kurs: string;
   "Liczba akcji": string;
 };
+
+export type AssetsInfoApi = {
+  "Aktywa razem": string;
+  "Kapitał własny akcjonariuszy jednostki dominującej": string;
+};

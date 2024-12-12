@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { getTickerInfo } from "../api/ticker-info.api";
+import { formatNumber } from "@/app/shared/utils/number";
 
 export default async function DataTable({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
@@ -29,7 +30,9 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead key="title" className="min-w-[200px]">Title</TableHead>
+          <TableHead key="title" className="min-w-[200px]">
+            Title
+          </TableHead>
           {columns.map((column) => {
             return (
               <TableHead className="min-w-[100px]" key={column}>
@@ -45,7 +48,7 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
             {row.map((cell, index) => {
               return (
                 <TableCell key={`${row[0]}_${index}`} className="font-medium">
-                  {cell}
+                  {typeof cell === "number" ? formatNumber(cell, ",d") : cell}
                 </TableCell>
               );
             })}

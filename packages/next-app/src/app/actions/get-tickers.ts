@@ -6,8 +6,6 @@ import { getCompanies } from "../services/companies";
 export async function getTickers({ filter }: { filter?: string } = {}): Promise<
   Company[]
 > {
-  console.log("filter", filter);
-
   const data = await getCompanies();
 
   const filterQuery = filter;

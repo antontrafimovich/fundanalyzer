@@ -1,4 +1,3 @@
 export type TickerInfo = {
   [key: string]: number;
-  "Data publikacji": number;
-} & {};
+} & { "Data publikacji": string; year: string };

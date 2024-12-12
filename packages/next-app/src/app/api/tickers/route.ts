@@ -11,9 +11,6 @@ async function getCompanies(): Promise<{ text: string }[]> {
 }
 
 export async function GET(request: NextRequest) {
-  console.log(JSON.stringify(request));
-  console.log(request.nextUrl.href);
-
   const filterQuery = request.nextUrl.searchParams.get("filter");
 
   const data = await getCompanies();

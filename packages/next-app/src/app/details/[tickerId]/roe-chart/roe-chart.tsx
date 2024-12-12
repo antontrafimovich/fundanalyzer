@@ -3,33 +3,30 @@ import { getTickerInfo } from "../api/ticker-info.api";
 import Chart from "./ui/charts/chart";
 
 const chartConfig = {
-  revenue: {
-    label: "Revenue",
+  roa: {
+    label: "ROA",
     color: "#2563eb",
   },
-  profit: {
-    label: "Profit",
+  roe: {
+    label: "ROE",
     color: "#eb6b25",
-  },
-  price: {
-    label: "Price",
-    color: "#6BAF5F",
   },
 } satisfies ChartConfig;
 
-export default async function RevenueChart({ tickerId }: { tickerId: string }) {
+export default async function ReturnChart({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
 
   const chartData = data!.map((row) => {
     return {
       year: row.year,
-      revenue:
+      roa:
+        Math.round((row["Zysk netto"] / row["Aktywa razem"]) * 10000) / 10000,
+      roe:
         Math.round(
-          (row["Przychody ze sprzedaży"] / row["Liczba akcji"]) * 1000 * 10
-        ) / 10,
-      profit:
-        Math.round((row["Zysk netto"] / row["Liczba akcji"]) * 1000 * 10) / 10,
-      price: row["Kurs"],
+          (row["Zysk netto"] /
+            row["Kapitał własny akcjonariuszy jednostki dominującej"]) *
+            10000
+        ) / 10000,
     };
   });
 
