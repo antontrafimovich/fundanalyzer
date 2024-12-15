@@ -1,6 +1,7 @@
 import { mapTickerInfoApiToDm } from "./ticker-info.api-mapper";
 import {
   AssetsInfoApi,
+  CashflowInfoApi,
   ShareInfoApi,
   TickerInfoApi,
 } from "./ticker-info.api-model";
@@ -37,15 +38,32 @@ async function getAssetsInfo(tickerId: string): Promise<AssetsInfoApi[]> {
   return response.json();
 }
 
+async function getCashflowInfo(tickerId: string): Promise<CashflowInfoApi[]> {
+  const response = await fetch(`http://localhost:4000/cashflow/${tickerId}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json();
+}
+
 export async function getTickerInfo(tickerId: string) {
   try {
-    const [tickerInfo, sharesResponse, assetsInfo] = await Promise.all([
-      getTickerProfitAndLossData(tickerId),
-      getSharesInfo(tickerId),
-      getAssetsInfo(tickerId),
-    ]);
+    const [tickerInfo, sharesResponse, assetsInfo, cashflowInfo] =
+      await Promise.all([
+        getTickerProfitAndLossData(tickerId),
+        getSharesInfo(tickerId),
+        getAssetsInfo(tickerId),
+        getCashflowInfo(tickerId),
+      ]);
 
-    return mapTickerInfoApiToDm(tickerInfo, sharesResponse, assetsInfo);
+    return mapTickerInfoApiToDm(
+      tickerInfo,
+      sharesResponse,
+      assetsInfo,
+      cashflowInfo
+    );
   } catch (err) {
     console.error(err);
   }

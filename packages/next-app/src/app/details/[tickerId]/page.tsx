@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 
+import CashflowChart from "./cashflow-chart/cashflow-chart";
 import DataTable from "./data-table/data-table";
 import RevenueChart from "./revenue-chart/revenue-chart";
 import ReturnChart from "./roe-chart/roe-chart";
@@ -16,7 +17,7 @@ export default async function Page({
 
   return (
     <div className="flex gap-3 p-4 h-full">
-      <Card className="flex-1 min-w-0 flex flex-col">
+      <Card className="flex flex-col flex-1 min-w-0">
         <Suspense fallback={<>Loading Data Table...</>}>
           <CardHeader>
             <CardTitle>Raw Info</CardTitle>
@@ -38,16 +39,28 @@ export default async function Page({
             </CardContent>
           </Suspense>
         </Card>
-        <Card className="flex flex-1 min-h-0 flex-col">
-          <Suspense fallback={<>Loading Return Chart...</>}>
-            <CardHeader>
-              <CardTitle>Profitability Chart</CardTitle>
-            </CardHeader>
-            <CardContent className="overflow-auto">
-              <ReturnChart tickerId={tickerId} />
-            </CardContent>
-          </Suspense>
-        </Card>
+        <div className="flex flex-1 gap-3 min-h-0">
+          <Card className="flex flex-col flex-1 min-w-0">
+            <Suspense fallback={<>Loading Return Chart...</>}>
+              <CardHeader>
+                <CardTitle>Profitability Chart</CardTitle>
+              </CardHeader>
+              <CardContent className="overflow-auto flex-1 min-h-0">
+                <ReturnChart tickerId={tickerId} />
+              </CardContent>
+            </Suspense>
+          </Card>
+          <Card className="flex flex-col flex-1 min-w-0">
+            <Suspense fallback={<>Loading Cashflow Chart...</>}>
+              <CardHeader>
+                <CardTitle>Cashflow Chart</CardTitle>
+              </CardHeader>
+              <CardContent className="overflow-auto flex-1 min-h-0">
+                <CashflowChart tickerId={tickerId} />
+              </CardContent>
+            </Suspense>
+          </Card>
+        </div>
       </div>
     </div>
   );

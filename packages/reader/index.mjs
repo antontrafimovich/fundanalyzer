@@ -102,6 +102,21 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === "GET" && segment === "cashflow" && payload) {
+    const fetchUrl = `${domain}/${cashflowReportPageRoute}/${payload}`;
+
+    try {
+      const data = await getData(fetchUrl);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(data));
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal Server Error");
+    }
+
+    return;
+  }
+
   if (req.method === "GET" && segment) {
     const fetchUrl = `${domain}/${profitAndLossPageRoute}/${segment}`;
     try {

@@ -37,8 +37,9 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
   const maxProfit = Math.max(...chartData.map((item) => item.profit));
   const maxPrice = Math.max(...chartData.map((item) => item.price));
 
+  const minDomain = Math.round(Math.min(minRevenue, minProfit, minPrice));
   const yDomain = [
-    Math.round(Math.min(minRevenue, minProfit, minPrice)) - 5,
+    minDomain >= 0 ? 0 : minDomain - 5,
     Math.round(Math.max(maxRevenue, maxProfit, maxPrice)) + 5,
   ];
 

@@ -1,8 +1,10 @@
 import { AssetsInfo } from "../model/assets-info";
+import { CashflowInfo } from "../model/cashflow-info";
 import { ShareInfo } from "../model/share-info";
 import { TickerInfo } from "../model/ticker-info";
 import {
   AssetsInfoApi,
+  CashflowInfoApi,
   ShareInfoApi,
   TickerInfoApi,
 } from "./ticker-info.api-model";
@@ -10,7 +12,8 @@ import {
 export function mapTickerInfoApiToDm(
   tickerInfo: TickerInfoApi[],
   sharesInfo: ShareInfoApi[],
-  assetsInfo: AssetsInfoApi[]
+  assetsInfo: AssetsInfoApi[],
+  cashflowInfo: CashflowInfoApi[]
 ): TickerInfo[] {
   const sharesMap: {
     [key: string]: ShareInfo;
@@ -36,11 +39,32 @@ export function mapTickerInfoApiToDm(
     };
   }, {});
 
+  const cashflowInfoList = cashflowInfo.map<CashflowInfo>((item) => {
+    const finCashflow = Number(
+      item["Przepływy pieniężne z działalności finansowej"].split(" ").join("")
+    );
+    const investCashflow = Number(
+      item["Przepływy pieniężne z działalności inwestycyjnej"]
+        .split(" ")
+        .join("")
+    );
+    const operationalCashflow = Number(
+      item["Przepływy pieniężne z działalności operacyjnej"].split(" ").join("")
+    );
+
+    return {
+      "Przepływy pieniężne z działalności finansowej": finCashflow,
+      "Przepływy pieniężne z działalności inwestycyjnej": investCashflow,
+      "Przepływy pieniężne z działalności operacyjnej": operationalCashflow,
+    };
+  }, {});
+
   return tickerInfo.map<TickerInfo>((row, index) => {
     const sharesRow =
       sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
 
     const assetsRow = assetsInfoList[index];
+    const cashflowRow = cashflowInfoList[index];
 
     const mappedRow = Object.keys(row).reduce<TickerInfo>((acc, key) => {
       if (key === "Data publikacji") {
@@ -67,6 +91,7 @@ export function mapTickerInfoApiToDm(
       ...sharesRow,
       ...mappedRow,
       ...assetsRow,
+      ...cashflowRow
     } as unknown as TickerInfo;
-  });
+  }).slice(Math.max(tickerInfo.length - 11, 0));
 }

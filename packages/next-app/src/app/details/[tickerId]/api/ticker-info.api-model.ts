@@ -13,3 +13,10 @@ export type AssetsInfoApi = {
   "Aktywa razem": string;
   "Kapitał własny akcjonariuszy jednostki dominującej": string;
 };
+
+export type CashflowInfoApi = {
+  year: string;
+  "Przepływy pieniężne z działalności operacyjnej": string;
+  "Przepływy pieniężne z działalności inwestycyjnej": string;
+  "Przepływy pieniężne z działalności finansowej": string;
+};
