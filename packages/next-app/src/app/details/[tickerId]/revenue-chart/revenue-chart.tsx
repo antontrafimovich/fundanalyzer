@@ -13,7 +13,7 @@ const chartConfig = {
   },
   price: {
     label: "Price",
-    color: "#6BAF5F",
+    color: "#DE639A",
   },
 } satisfies ChartConfig;
 

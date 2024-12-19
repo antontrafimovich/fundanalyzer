@@ -9,11 +9,11 @@ const chartConfig = {
   },
   investCashflow: {
     label: "Przełwy inwestycyjne na akcję",
-    color: "#eb6b25",
+    color: "#F84AA7",
   },
   financeCashflow: {
     label: "Przepływy finansowe na akcje",
-    color: "#6BAF5F",
+    color: "#eb6b25",
   },
 } satisfies ChartConfig;
 
@@ -41,12 +41,13 @@ export default async function CashflowChart({
             1000 *
             10
         ) / 10,
-        financeCashflow: Math.round(
+      financeCashflow:
+        Math.round(
           (row["Przepływy pieniężne z działalności finansowej"] /
             row["Liczba akcji"]) *
             1000 *
             10
-        ) / 10
+        ) / 10,
     };
   });
 

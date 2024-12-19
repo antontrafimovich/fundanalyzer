@@ -90,13 +90,13 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           stackId={"test"}
         />
         <Bar
-          dataKey="investCashflow"
-          fill="var(--color-investCashflow)"
+          dataKey="financeCashflow"
+          fill="var(--color-financeCashflow)"
           stackId={"test"}
         />
         <Bar
-          dataKey="financeCashflow"
-          fill="var(--color-financeCashflow)"
+          dataKey="investCashflow"
+          fill="var(--color-investCashflow)"
           stackId={"test"}
         />
       </BarChart>

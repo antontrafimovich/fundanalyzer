@@ -37,13 +37,18 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
   const maxProfit = Math.max(...chartData.map((item) => item.profit));
   const maxPrice = Math.max(...chartData.map((item) => item.price));
 
-  const minDomain = Math.round(Math.min(minRevenue, minProfit, minPrice));
+  const minDomain = Math.round(Math.min(minRevenue, minProfit));
   const yDomain = [
     minDomain >= 0 ? 0 : minDomain - 5,
-    Math.round(Math.max(maxRevenue, maxProfit, maxPrice)) + 5,
+    Math.ceil(Math.max(maxRevenue, maxProfit)) + 5,
   ];
 
-  console.log(yDomain)
+  const priceDomain = [
+    Math.ceil(minPrice < 5 ? minPrice : minPrice - 5),
+    Math.round(Math.ceil(maxPrice + 5) / 10) * 10,
+  ];
+
+  console.log(yDomain);
 
   return (
     <ChartContainer config={chartConfig} className="size-full">
@@ -61,22 +66,40 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           tickLine={false}
           tickMargin={10}
           axisLine={false}
+          yAxisId={"revenue"}
+          // tickFormatter={(value) => value.slice(0, 3)}
+        />
+        <YAxis
+          domain={priceDomain}
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          orientation="right"
+          yAxisId={"price"}
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey="revenue" fill="var(--color-revenue)" radius={4} />
         <Bar
+          yAxisId={"revenue"}
+          dataKey="revenue"
+          fill="var(--color-revenue)"
+          radius={4}
+        />
+        <Bar
+          yAxisId={"revenue"}
           dataKey="profit"
           fill="var(--color-profit)"
           radius={4}
           label={{ fill: "white" }}
         />
         <Line
+          yAxisId={"price"}
           type="monotone"
           dataKey="price"
           stroke="var(--color-price)"
           strokeWidth={2}
+          activeDot={{ r: 8 }}
         />
       </ComposedChart>
     </ChartContainer>

@@ -5,11 +5,11 @@ import Chart from "./ui/charts/chart";
 const chartConfig = {
   roa: {
     label: "ROA",
-    color: "#2563eb",
+    color: "#eb6b25",
   },
   roe: {
     label: "ROE",
-    color: "#eb6b25",
+    color: "#2563eb",
   },
 } satisfies ChartConfig;
 

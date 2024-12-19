@@ -9,6 +9,17 @@ import {
 import { getTickerInfo } from "../api/ticker-info.api";
 import { formatNumber } from "@/app/shared/utils/number";
 
+const BOLD_KEYS = [
+  "Przychody ze sprzedaży",
+  "Zysk ze sprzedaży",
+  "Zysk operacyjny (EBIT)",
+  "Zysk z działalności gospodarczej",
+  "Zysk przed opodatkowaniem",
+  "Zysk netto",
+  "Zysk netto akcjonariuszy jednostki dominującej",
+  "EBITDA",
+];
+
 export default async function DataTable({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
   const columns = data!.map((row) => row.year);
@@ -44,10 +55,15 @@ export default async function DataTable({ tickerId }: { tickerId: string }) {
       </TableHeader>
       <TableBody>
         {rows.map((row) => (
-          <TableRow key={row[0]}>
+          <TableRow
+            key={row[0]}
+            className={`even:bg-gray-100 ${
+              BOLD_KEYS.includes(row[0] as string) ? "font-bold" : ""
+            }`}
+          >
             {row.map((cell, index) => {
               return (
-                <TableCell key={`${row[0]}_${index}`} className="font-medium">
+                <TableCell key={`${row[0]}_${index}`}>
                   {typeof cell === "number" ? formatNumber(cell, ",d") : cell}
                 </TableCell>
               );
