@@ -10,6 +10,7 @@ import {
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 type CompanyInfo = {
   title: string;
@@ -21,6 +22,8 @@ export type SearchProps = {
 };
 
 export const Search = ({ items }: SearchProps) => {
+  const [, setTabs] = useLocalStorage<string[]>("tabs");
+  const [, setActive] = useLocalStorage<string>("activeTab");
   const [term, setTerm] = useState("");
   const results = useCompanyMatch(term, items);
   const router = useRouter();
@@ -30,7 +33,10 @@ export const Search = ({ items }: SearchProps) => {
       <Combobox
         aria-label="Cities"
         className="w-full"
-        onSelect={(value) => router.push(value)}
+        onSelect={(value) => {
+          setTabs((prevTabs) => [...prevTabs, value]);
+          setActive(value);
+        }}
       >
         <ComboboxInput
           className="flex h-9 w-3/12 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
