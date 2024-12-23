@@ -85,13 +85,15 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           dataKey="revenue"
           fill="var(--color-revenue)"
           radius={4}
+          label={{ fill: "var(--color-revenue)", position: 'top', fontWeight: 'bold' }}
+
         />
         <Bar
           yAxisId={"revenue"}
           dataKey="profit"
           fill="var(--color-profit)"
           radius={4}
-          label={{ fill: "white" }}
+          label={{ fill: "var(--color-profit)", position: 'top', fontWeight: 'bold' }}
         />
         <Line
           yAxisId={"price"}
