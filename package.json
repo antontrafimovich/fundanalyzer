@@ -6,6 +6,7 @@
   "scripts": {
     "start:reader": "pnpm --filter reader start",
     "start:app": "pnpm --filter next-app dev",
+    "build": "pnpm --filter next-app build",
     "start": "concurrently \"pnpm start:app\" \"pnpm start:reader\""
   },
   "keywords": [],
