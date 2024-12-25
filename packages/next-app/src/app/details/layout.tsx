@@ -8,7 +8,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex flex-col h-full bg-surface-primary">
-      <div className="basis-14 px-7 flex items-center shadow-sm bg-white">
+      <div className="basis-14 px-2 flex items-center shadow-sm bg-white">
         <Search
           items={companies.map((company) => ({
             title: company.text,
@@ -17,7 +17,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
         />
       </div>
       <div className="flex flex-col min-h-0 p-2 pt-0 h-full bg-surface-primary">
-        <Tabs className="pl-0" />
+        <Tabs />
         {children}
       </div>
     </div>

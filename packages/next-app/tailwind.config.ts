@@ -13,9 +13,9 @@ const config: Config = {
         surface: {
           primary: "#edf0f4",
         },
-		border: {
-			primary: '#d7e2ed',
-		},
+        table: {
+          cellHoverBackground: "#e7e7e9",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

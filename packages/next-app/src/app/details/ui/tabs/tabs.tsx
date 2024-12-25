@@ -1,23 +1,19 @@
-"use client";
+"use client"
 
 import {
   Tabs as ShadcnTabs,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-
 import { useRouter } from "next/navigation";
-import { useLocalStorage } from "@uidotdev/usehooks";
 import { useEffect } from "react";
+
+import { useTabs } from "./use-tabs";
 
 export const Tabs = () => {
   const router = useRouter();
 
-  const [tabs] = useLocalStorage<string[]>("tabs", ["CD-PROJEKT", "TXT"]);
-  const [activeTab, setActive] = useLocalStorage<string>(
-    "activeTab",
-    "CD-PROJEKT"
-  );
+  const { activeTab, tabs, setActive, closeTab } = useTabs();
 
   useEffect(() => {
     router.push(`/details/${activeTab}`);
@@ -37,6 +33,16 @@ export const Tabs = () => {
             value={tab}
           >
             {tab}
+
+            <span
+              className="ml-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeTab(tab);
+              }}
+            >
+              X
+            </span>
           </TabsTrigger>
         ))}
       </TabsList>

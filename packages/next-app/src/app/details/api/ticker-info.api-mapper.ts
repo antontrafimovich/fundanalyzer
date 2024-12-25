@@ -32,10 +32,18 @@ export function mapTickerInfoApiToDm(
         .split(" ")
         .join("")
     );
+    const currentLiabilities = Number(
+      item["Zobowiązania krótkoterminowe"].split(" ").join("")
+    );
+    const nonCurrentLiabilities = Number(
+      item["Zobowiązania długoterminowe"].split(" ").join("")
+    );
 
     return {
       "Aktywa razem": assets,
       "Kapitał własny akcjonariuszy jednostki dominującej": equity,
+      "Zobowiązania długoterminowe": nonCurrentLiabilities,
+      "Zobowiązania krótkoterminowe": currentLiabilities,
     };
   }, {});
 
@@ -59,39 +67,41 @@ export function mapTickerInfoApiToDm(
     };
   }, {});
 
-  return tickerInfo.map<TickerInfo>((row, index) => {
-    const sharesRow =
-      sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
+  return tickerInfo
+    .map<TickerInfo>((row, index) => {
+      const sharesRow =
+        sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
 
-    const assetsRow = assetsInfoList[index];
-    const cashflowRow = cashflowInfoList[index];
+      const assetsRow = assetsInfoList[index];
+      const cashflowRow = cashflowInfoList[index];
 
-    const mappedRow = Object.keys(row).reduce<TickerInfo>((acc, key) => {
-      if (key === "Data publikacji") {
+      const mappedRow = Object.keys(row).reduce<TickerInfo>((acc, key) => {
+        if (key === "Data publikacji") {
+          return {
+            ...acc,
+            [key]: row[key],
+          } as TickerInfo;
+        }
+
+        if (key === "year") {
+          return {
+            ...acc,
+            year: row[key],
+          } as TickerInfo;
+        }
+
         return {
           ...acc,
-          [key]: row[key],
-        } as TickerInfo;
-      }
-
-      if (key === "year") {
-        return {
-          ...acc,
-          year: row[key],
-        } as TickerInfo;
-      }
+          [key]: Number(row[key].split(" ").join("")),
+        };
+      }, {} as TickerInfo);
 
       return {
-        ...acc,
-        [key]: Number(row[key].split(" ").join("")),
-      };
-    }, {} as TickerInfo);
-
-    return {
-      ...sharesRow,
-      ...mappedRow,
-      ...assetsRow,
-      ...cashflowRow
-    } as unknown as TickerInfo;
-  }).slice(Math.max(tickerInfo.length - 11, 0));
+        ...sharesRow,
+        ...mappedRow,
+        ...assetsRow,
+        ...cashflowRow,
+      } as unknown as TickerInfo;
+    })
+    .slice(Math.max(tickerInfo.length - 11, 0));
 }

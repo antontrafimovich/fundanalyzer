@@ -12,6 +12,8 @@ export type ShareInfoApi = {
 export type AssetsInfoApi = {
   "Aktywa razem": string;
   "Kapitał własny akcjonariuszy jednostki dominującej": string;
+  "Zobowiązania krótkoterminowe": string;
+  "Zobowiązania długoterminowe": string;
 };
 
 export type CashflowInfoApi = {

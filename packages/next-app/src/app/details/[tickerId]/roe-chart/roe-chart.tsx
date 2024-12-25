@@ -1,5 +1,5 @@
 import { ChartConfig } from "@/components/ui/chart";
-import { getTickerInfo } from "../api/ticker-info.api";
+import { getTickerInfo } from "../../api/ticker-info.api";
 import Chart from "./ui/charts/chart";
 
 const chartConfig = {

@@ -1,4 +1,5 @@
 "use client";
+
 import {
   ChartConfig,
   ChartContainer,
@@ -18,9 +19,9 @@ import {
 
 type ChartDataItem = {
   year: string;
-  operationalCashflow: number;
-  investCashflow: number;
-  financeCashflow: number;
+  liabilities: number;
+  bookValue: number;
+  price: number;
 };
 
 export type ChartProps = {
@@ -29,36 +30,25 @@ export type ChartProps = {
 };
 
 export default function Chart({ chartConfig, chartData }: ChartProps) {
-  const minOperationalCashflow = Math.min(
-    ...chartData.map((item) => item.operationalCashflow)
-  );
-  const minInvestCashflow = Math.min(
-    ...chartData.map((item) => item.investCashflow)
-  );
-  const minFinanceCashflow = Math.min(
-    ...chartData.map((item) => item.financeCashflow)
-  );
-  const maxOperationalCashflow = Math.max(
-    ...chartData.map((item) => item.operationalCashflow)
-  );
-  const maxInvestCashflow = Math.max(
-    ...chartData.map((item) => item.investCashflow)
-  );
+  const minLiabilities = Math.min(...chartData.map((item) => item.liabilities));
+  const minBookValue = Math.min(...chartData.map((item) => item.bookValue));
+  const minPrice = Math.min(...chartData.map((item) => item.price));
+  const maxLiabilities = Math.max(...chartData.map((item) => item.liabilities));
+  const maxBookValue = Math.max(...chartData.map((item) => item.bookValue));
+  const maxPrice = Math.max(...chartData.map((item) => item.price));
 
-  const maxFinanceCashflow = Math.max(
-    ...chartData.map((item) => item.financeCashflow)
+  const minDomain = Math.round(
+    Math.min(minLiabilities, minBookValue, minPrice)
   );
-
   const yDomain = [
-    Math.round(
-      Math.min(minOperationalCashflow, minInvestCashflow, minFinanceCashflow)
-    ) - 5,
-    Math.round(
-      Math.max(maxOperationalCashflow, maxInvestCashflow, maxFinanceCashflow)
-    ) + 5,
+    minDomain >= 0 ? 0 : minDomain - 5,
+    Math.ceil(Math.max(maxLiabilities, maxBookValue, maxPrice)) + 5,
   ];
 
-  console.log(yDomain);
+  // const priceDomain = [
+  //   Math.ceil(minPrice < 5 ? minPrice : minPrice - 5),
+  //   Math.round(Math.ceil(maxPrice + 5) / 10) * 10,
+  // ];
 
   return (
     <ChartContainer config={chartConfig} className="size-full">
@@ -82,20 +72,16 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
         <Bar
-          dataKey="operationalCashflow"
-          fill="var(--color-operationalCashflow)"
+          dataKey="bookValue"
+          fill="var(--color-bookValue)"
           stackId={"test"}
         />
         <Bar
-          dataKey="financeCashflow"
-          fill="var(--color-financeCashflow)"
+          dataKey="liabilities"
+          fill="var(--color-liabilities)"
           stackId={"test"}
         />
-        <Bar
-          dataKey="investCashflow"
-          fill="var(--color-investCashflow)"
-          stackId={"test"}
-        />
+        <Bar dataKey="price" fill="var(--color-price)" />
       </BarChart>
     </ChartContainer>
   );

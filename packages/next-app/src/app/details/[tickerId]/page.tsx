@@ -1,16 +1,17 @@
 import { getTickers } from "@/app/actions/get-tickers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Suspense } from "react";
-
-import CashflowChart from "./cashflow-chart/cashflow-chart";
-import DataTable from "./data-table/data-table";
-import RevenueChart from "./revenue-chart/revenue-chart";
-import ReturnChart from "./roe-chart/roe-chart";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Suspense } from "react";
+
+import CashflowChart from "./cashflow-chart/cashflow-chart";
+import InfoTable from "./info-table/info-table";
+import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
+import RevenueChart from "./revenue-chart/revenue-chart";
+import ReturnChart from "./roe-chart/roe-chart";
 
 export default async function Page({
   params,
@@ -26,30 +27,45 @@ export default async function Page({
   await fetch(`http://localhost:4000/${tickerId}`);
 
   return (
-    <Card className="flex flex-1 min-h-0 border-t-0 border-border-primary rounded-tl-none border-l-0">
+    <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
       <ResizablePanelGroup direction="horizontal" className="size-full">
-        <ResizablePanel defaultSize={50} className="flex flex-col">
+        <ResizablePanel defaultSize={40} className="flex flex-col">
           <Suspense fallback={<>Loading Data Table...</>}>
             <CardHeader>
               <CardTitle>{company.text}</CardTitle>
             </CardHeader>
             <CardContent className="flex-1 min-h-0 pr-1">
-              <DataTable tickerId={tickerId} />
+              <InfoTable tickerId={tickerId} />
             </CardContent>
           </Suspense>
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={50} className="flex flex-col">
+        <ResizablePanel defaultSize={60} className="flex flex-col">
           <ResizablePanelGroup direction="vertical">
             <ResizablePanel defaultSize={50} className="flex flex-col">
-              <Suspense fallback={<>Loading Revenue Chart...</>}>
-                <CardHeader>
-                  <CardTitle>Revenue Chart</CardTitle>
-                </CardHeader>
-                <CardContent className="overflow-auto">
-                  <RevenueChart tickerId={tickerId} />
-                </CardContent>
-              </Suspense>
+              <ResizablePanelGroup direction="horizontal">
+                <ResizablePanel defaultSize={50} className="flex flex-col">
+                  <Suspense fallback={<>Loading Revenue Chart...</>}>
+                    <CardHeader>
+                      <CardTitle>Revenue Chart</CardTitle>
+                    </CardHeader>
+                    <CardContent className="overflow-auto flex-1 min-h-0">
+                      <RevenueChart tickerId={tickerId} />
+                    </CardContent>
+                  </Suspense>
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={50} className="flex flex-col">
+                  <Suspense fallback={<>Loading Liabilities Chart...</>}>
+                    <CardHeader>
+                      <CardTitle>Liabilities Chart</CardTitle>
+                    </CardHeader>
+                    <CardContent className="overflow-auto flex-1 min-h-0">
+                      <LiabilitiesChart tickerId={tickerId} />
+                    </CardContent>
+                  </Suspense>
+                </ResizablePanel>
+              </ResizablePanelGroup>
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={50}>
