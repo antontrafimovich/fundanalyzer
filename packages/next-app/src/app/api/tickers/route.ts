@@ -1,7 +1,9 @@
 import { type NextRequest } from "next/server";
 
+const DOMAIN = process.env.DOMAIN || "http://localhost:4000";
+
 async function getCompanies(): Promise<{ text: string }[]> {
-  const response = await fetch("http://localhost:4000/companies", {
+  const response = await fetch(`${DOMAIN}/companies`, {
     next: {
       revalidate: 3600,
     },

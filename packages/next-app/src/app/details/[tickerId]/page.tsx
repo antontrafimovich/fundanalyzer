@@ -13,6 +13,8 @@ import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
 import RevenueChart from "./revenue-chart/revenue-chart";
 import ReturnChart from "./roe-chart/roe-chart";
 
+const DOMAIN = process.env.DOMAIN || "http://localhost:4000";
+
 export default async function Page({
   params,
 }: {
@@ -24,7 +26,7 @@ export default async function Page({
 
   const company = companies.find((company) => company.ut === tickerId)!;
 
-  await fetch(`http://localhost:4000/${tickerId}`);
+  await fetch(`${DOMAIN}/${tickerId}`);
 
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
