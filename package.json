@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start:reader": "pnpm --filter reader start",
-    "start:app": "pnpm --filter next-app dev",
+    "start:dev": "DOMAIN=http://165.232.69.82 pnpm --filter next-app dev",
+    "start:app": "DOMAIN=http://165.232.69.82 pnpm --filter next-app start",
     "build": "pnpm --filter next-app build",
-    "start": "concurrently \"pnpm start:app\" \"pnpm start:reader\""
+    "start": "concurrently \"pnpm start:dev\" \"pnpm start:reader\""
   },
   "keywords": [],
   "author": "",
