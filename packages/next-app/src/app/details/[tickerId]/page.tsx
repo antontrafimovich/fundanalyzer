@@ -49,7 +49,7 @@ export default async function Page({
                     <CardHeader>
                       <CardTitle>Revenue Chart</CardTitle>
                     </CardHeader>
-                    <CardContent className="overflow-auto flex-1 min-h-0">
+                    <CardContent className="overflow-auto p-0 pb-6 flex-1 min-h-0">
                       <RevenueChart tickerId={tickerId} />
                     </CardContent>
                   </Suspense>
@@ -60,7 +60,7 @@ export default async function Page({
                     <CardHeader>
                       <CardTitle>Liabilities Chart</CardTitle>
                     </CardHeader>
-                    <CardContent className="overflow-auto flex-1 min-h-0">
+                    <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
                       <LiabilitiesChart tickerId={tickerId} />
                     </CardContent>
                   </Suspense>
@@ -75,7 +75,7 @@ export default async function Page({
                     <CardHeader>
                       <CardTitle>Profitability Chart</CardTitle>
                     </CardHeader>
-                    <CardContent className="overflow-auto flex-1 min-h-0">
+                    <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
                       <ReturnChart tickerId={tickerId} />
                     </CardContent>
                   </Suspense>
@@ -86,7 +86,7 @@ export default async function Page({
                     <CardHeader>
                       <CardTitle>Cashflow Chart</CardTitle>
                     </CardHeader>
-                    <CardContent className="overflow-auto flex-1 min-h-0">
+                    <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
                       <CashflowChart tickerId={tickerId} />
                     </CardContent>
                   </Suspense>

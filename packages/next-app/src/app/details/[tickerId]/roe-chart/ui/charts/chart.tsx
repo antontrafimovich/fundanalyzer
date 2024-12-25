@@ -7,9 +7,16 @@ import {
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/components/ui/chart';
-import { useMemo } from 'react';
-import { Bar, CartesianGrid, ComposedChart, Line, XAxis } from 'recharts';
+} from "@/components/ui/chart";
+import { useMemo } from "react";
+import {
+  Bar,
+  CartesianGrid,
+  ComposedChart,
+  Line,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 type ChartDataItem = {
   year: string;
@@ -43,6 +50,19 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
     }, []);
   }, [chartData]);
 
+  const returnDomain = useMemo(() => {
+    const minRoa = Math.min(...finalChartData.map((item) => item.roa));
+    const minRoe = Math.min(...finalChartData.map((item) => item.roe));
+    const maxRoa = Math.max(...finalChartData.map((item) => item.roa));
+    const maxRoe = Math.max(...finalChartData.map((item) => item.roe));
+
+    const minDomain = Math.round(Math.min(minRoa, minRoe));
+    return [
+      minDomain >= 0 ? 0 : minDomain - 0.05,
+      Math.ceil(Math.max(maxRoa, maxRoe)) + 0.05,
+    ];
+  }, [finalChartData]);
+
   return (
     <ChartContainer config={chartConfig} className="size-full">
       <ComposedChart accessibilityLayer data={finalChartData}>
@@ -54,7 +74,13 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           axisLine={false}
           // tickFormatter={(value) => value.slice(0, 3)}
         />
-
+        <YAxis
+          domain={returnDomain}
+          tickLine={false}
+          tickMargin={10}
+          axisLine={false}
+          // tickFormatter={(value) => value.slice(0, 3)}
+        />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
         <Bar dataKey="roe" fill="var(--color-roe)" radius={4} />

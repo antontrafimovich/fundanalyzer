@@ -50,7 +50,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
 
   return (
     <ChartContainer config={chartConfig} className="size-full">
-      <ComposedChart data={chartData}>
+      <ComposedChart data={chartData} margin={{ left: 0 }} cx={5}>
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="year"
@@ -60,6 +60,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
+          allowDecimals={false}
           domain={yDomain}
           tickLine={false}
           tickMargin={10}
@@ -106,7 +107,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           dataKey="price"
           stroke="var(--color-price)"
           strokeWidth={2}
-          activeDot={{ r: 8 }}
+          activeDot={{ r: 6 }}
         />
       </ComposedChart>
     </ChartContainer>
