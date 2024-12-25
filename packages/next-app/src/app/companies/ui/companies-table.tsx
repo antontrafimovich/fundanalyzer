@@ -1,8 +1,5 @@
 "use client";
 
-// import "ag-grid-community/styles/ag-grid.css";
-// import "ag-grid-community/styles/ag-theme-quartz.css";
-
 import { AgGridReact } from "ag-grid-react";
 import { useContext } from "react";
 
@@ -16,8 +13,6 @@ const theme = themeQuartz.withParams({
 
 export default function CompaniesTable(props: { companies: Company[] }) {
   const { setSelectedCompanies } = useContext(RootContext);
-
-  // const columns = [{ field: "text" }, { field: "shortname" }];
 
   const rowData = props.companies;
 

@@ -20,6 +20,7 @@
     "@reach/combobox": "^0.18.0",
     "@tanstack/react-virtual": "^3.11.2",
     "@types/d3-format": "^3.0.4",
+    "ag-grid-community": "^32.3.2",
     "ag-grid-react": "^32.3.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

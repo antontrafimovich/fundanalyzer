@@ -40,7 +40,7 @@ export const Table = ({ data }: TableProps) => {
       resizable: false,
       cellClass: "hover:bg-table-cellHoverBackground",
       flex: 1,
-      valueFormatter: ({ value }) => {
+      valueFormatter: ({ value }: { value: string | number }) => {
         return typeof value === "number" ? formatNumber(value, ",d") : value;
       },
 
