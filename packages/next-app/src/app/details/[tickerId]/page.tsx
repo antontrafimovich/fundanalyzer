@@ -28,6 +28,8 @@ export default async function Page({
 
   await fetch(`${DOMAIN}/${tickerId}`);
 
+  console.log("domain", DOMAIN);
+
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
       <ResizablePanelGroup direction="horizontal" className="size-full">

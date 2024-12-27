@@ -8,6 +8,8 @@ export async function getTickers({ filter }: { filter?: string } = {}): Promise<
 > {
   const data = await getCompanies();
 
+  console.log('companies', data);
+
   const filterQuery = filter;
   let filteredData = data;
 
