@@ -1,6 +1,6 @@
 "use client";
 
-import { TickerInfo } from "@/app/details/model/ticker-info";
+import { TickerInfo } from "@/app/model/ticker-info";
 import { formatNumber } from "@/app/shared/utils/number";
 import AgGridTable from "@/components/ui/ag-grid-table/ag-grid-table";
 

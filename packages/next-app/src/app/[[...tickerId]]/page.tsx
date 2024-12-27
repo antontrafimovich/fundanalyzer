@@ -20,15 +20,23 @@ export default async function Page({
 }: {
   params: Promise<{ tickerId: string }>;
 }) {
-  const tickerId = (await params).tickerId;
+  const [tickerId] = (await params).tickerId;
+
+  if (!tickerId) {
+    return (
+      <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
+        Ticker not found
+      </Card>
+    );
+  }
 
   const companies = await getTickers();
+
+  console.log(tickerId, "tickerId");
 
   const company = companies.find((company) => company.ut === tickerId)!;
 
   await fetch(`${DOMAIN}/${tickerId}`);
-
-  console.log("domain", DOMAIN);
 
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">

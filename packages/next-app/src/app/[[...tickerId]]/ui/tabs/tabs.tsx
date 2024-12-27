@@ -1,29 +1,26 @@
-"use client"
-
+"use client";
 import {
   Tabs as ShadcnTabs,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 import { useTabs } from "./use-tabs";
 
-export const Tabs = () => {
+export const Tabs = ({ active }: { active: string }) => {
   const router = useRouter();
 
-  const { activeTab, tabs, setActive, closeTab } = useTabs();
-
-  useEffect(() => {
-    router.push(`/details/${activeTab}`);
-  }, [router, activeTab]);
+  const { tabs, closeTab } = useTabs();
 
   return (
     <ShadcnTabs
-      value={activeTab}
+      value={active || tabs[0]}
       className="w-[400px]"
-      onValueChange={(value) => setActive(value)}
+      onValueChange={(value) => {
+        console.log('anton')
+        router.push(`/${value}`);
+      }}
     >
       <TabsList className="bg-transparent pb-0 items-end pl-0">
         {tabs.map((tab) => (

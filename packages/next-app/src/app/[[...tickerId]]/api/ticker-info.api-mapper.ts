@@ -1,7 +1,7 @@
-import { AssetsInfo } from "../model/assets-info";
-import { CashflowInfo } from "../model/cashflow-info";
-import { ShareInfo } from "../model/share-info";
-import { TickerInfo } from "../model/ticker-info";
+import { AssetsInfo } from "../../model/assets-info";
+import { CashflowInfo } from "../../model/cashflow-info";
+import { ShareInfo } from "../../model/share-info";
+import { TickerInfo } from "../../model/ticker-info";
 import {
   AssetsInfoApi,
   CashflowInfoApi,
