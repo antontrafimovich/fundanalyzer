@@ -15,6 +15,9 @@ async function getTickerProfitAndLossData(
     headers: {
       "Content-Type": "application/json",
     },
+    next: {
+      revalidate: 3600,
+    },
   });
 
   return response.json();
@@ -24,6 +27,9 @@ async function getSharesInfo(tickerId: string): Promise<ShareInfoApi[]> {
   const response = await fetch(`${DOMAIN}/shares/${tickerId}`, {
     headers: {
       "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 3600,
     },
   });
 
@@ -35,6 +41,9 @@ async function getAssetsInfo(tickerId: string): Promise<AssetsInfoApi[]> {
     headers: {
       "Content-Type": "application/json",
     },
+    next: {
+      revalidate: 3600,
+    },
   });
 
   return response.json();
@@ -44,6 +53,9 @@ async function getCashflowInfo(tickerId: string): Promise<CashflowInfoApi[]> {
   const response = await fetch(`${DOMAIN}/cashflow/${tickerId}`, {
     headers: {
       "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 3600,
     },
   });
 

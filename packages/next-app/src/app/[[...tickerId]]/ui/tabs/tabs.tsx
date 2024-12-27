@@ -7,18 +7,25 @@ import {
 import { useRouter } from "next/navigation";
 
 import { useTabs } from "./use-tabs";
+import { useEffect } from "react";
 
 export const Tabs = ({ active }: { active: string }) => {
   const router = useRouter();
 
-  const { tabs, closeTab } = useTabs();
+  const { tabs, closeTab, appendTab } = useTabs();
+
+  useEffect(() => {
+    if (active && !tabs.includes(active)) {
+      appendTab(active);
+    }
+  }, []);
 
   return (
     <ShadcnTabs
-      value={active || tabs[0]}
+      defaultValue={active || tabs[0]}
       className="w-[400px]"
       onValueChange={(value) => {
-        console.log('anton')
+        console.log("anton");
         router.push(`/${value}`);
       }}
     >
@@ -35,7 +42,11 @@ export const Tabs = ({ active }: { active: string }) => {
               className="ml-2"
               onClick={(e) => {
                 e.stopPropagation();
+                const tabIndex = tabs.indexOf(tab);
                 closeTab(tab);
+                if (tab === active) {
+                  router.push(`/${tabs[tabIndex - 1]}`);
+                }
               }}
             >
               X
