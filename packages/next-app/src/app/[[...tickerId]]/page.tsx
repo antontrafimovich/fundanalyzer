@@ -1,4 +1,3 @@
-import { getTickers } from "@/app/actions/get-tickers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ResizableHandle,
@@ -13,42 +12,27 @@ import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
 import RevenueChart from "./revenue-chart/revenue-chart";
 import ReturnChart from "./roe-chart/roe-chart";
 
-const DOMAIN = process.env.DOMAIN || "http://localhost:4000";
-
 export default async function Page({
   params,
 }: {
   params: Promise<{ tickerId: string }>;
 }) {
-  const [tickerId] = (await params).tickerId;
+  const [tickerId] = (await params).tickerId ?? [];
 
   if (!tickerId) {
     return (
-      <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
-        Ticker not found
+      <Card className="flex flex-1 items-center justify-center min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
+        Please select a company from the search bar
       </Card>
     );
   }
-
-  const companies = await getTickers();
-
-  console.log(tickerId, "tickerId");
-
-  const company = companies.find((company) => company.ut === tickerId)!;
-
-  await fetch(`${DOMAIN}/${tickerId}`);
 
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
       <ResizablePanelGroup direction="horizontal" className="size-full">
         <ResizablePanel defaultSize={40} className="flex flex-col">
           <Suspense fallback={<>Loading Data Table...</>}>
-            <CardHeader>
-              <CardTitle>{company.text}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-1 min-h-0 pr-1">
-              <InfoTable tickerId={tickerId} />
-            </CardContent>
+            <InfoTable tickerId={tickerId} />
           </Suspense>
         </ResizablePanel>
         <ResizableHandle withHandle />

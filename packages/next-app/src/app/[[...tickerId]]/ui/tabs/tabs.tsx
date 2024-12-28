@@ -42,11 +42,7 @@ export const Tabs = ({ active }: { active: string }) => {
               className="ml-2"
               onClick={(e) => {
                 e.stopPropagation();
-                const tabIndex = tabs.indexOf(tab);
                 closeTab(tab);
-                if (tab === active) {
-                  router.push(`/${tabs[tabIndex - 1]}`);
-                }
               }}
             >
               X
