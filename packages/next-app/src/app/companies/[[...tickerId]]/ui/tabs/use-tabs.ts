@@ -9,8 +9,8 @@ export function useTabs() {
 
   const appendTab = (tab: string) => {
     setTabs((prev) => {
-      router.push(`/${tab}`);
-      return [...prev, tab];
+      router.push(`/companies/${tab}`);
+      return Array.from(new Set([...prev, tab]));
     });
   };
 
@@ -18,9 +18,9 @@ export function useTabs() {
     setTabs((prev) => {
       const closingIndex = prev.indexOf(tab);
       if (closingIndex !== 0) {
-        router.push(`/${prev[closingIndex - 1]}`);
+        router.push(`/companies/${prev[closingIndex - 1]}`);
       } else {
-        router.push("/");
+        router.push("/companies");
       }
 
       return prev.filter((t) => t !== tab);

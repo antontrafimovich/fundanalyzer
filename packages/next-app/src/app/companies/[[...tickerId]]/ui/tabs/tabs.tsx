@@ -25,8 +25,7 @@ export const Tabs = ({ active }: { active: string }) => {
       defaultValue={active || tabs[0]}
       className="w-[400px]"
       onValueChange={(value) => {
-        console.log("anton");
-        router.push(`/${value}`);
+        router.push(`/companies/${value}`);
       }}
     >
       <TabsList className="bg-transparent pb-0 items-end pl-0">
