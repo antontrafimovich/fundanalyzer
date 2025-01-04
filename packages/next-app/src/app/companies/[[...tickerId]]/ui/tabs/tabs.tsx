@@ -12,7 +12,22 @@ import { useEffect } from "react";
 export const Tabs = ({ active }: { active: string }) => {
   const router = useRouter();
 
-  const { tabs, closeTab, appendTab } = useTabs();
+  const { tabs, closeTab, appendTab } = useTabs({
+    onCloseTab: (tab, tabs) => {
+      if (active !== tab) {
+        return;
+      }
+
+      const closingIndex = tabs.indexOf(tab);
+
+      if (tabs.length > 1) {
+        const nextActiveTab = tabs[closingIndex + 1] || tabs[closingIndex - 1];
+        router.push(`/companies/${nextActiveTab}`);
+      } else {
+        router.push("/companies");
+      }
+    },
+  });
 
   useEffect(() => {
     if (active && !tabs.includes(active)) {
@@ -43,7 +58,7 @@ export const Tabs = ({ active }: { active: string }) => {
 
             <span
               className="ml-2"
-              onClick={(e) => {
+              onMouseDown={(e) => {
                 e.stopPropagation();
                 closeTab(tab);
               }}
