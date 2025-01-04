@@ -18,6 +18,10 @@ export const Tabs = ({ active }: { active: string }) => {
     if (active && !tabs.includes(active)) {
       appendTab(active);
     }
+
+    if (!active && tabs.length > 0) {
+      router.push(`/companies/${tabs[0]}`);
+    }
   }, []);
 
   return (

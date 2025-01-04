@@ -20,18 +20,21 @@ const chartConfig = {
 export default async function RevenueChart({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
 
-  const chartData = data!.map((row) => {
-    return {
-      year: row.year,
-      revenue:
-        Math.round(
-          (row["Przychody ze sprzedaży"] / row["Liczba akcji"]) * 1000 * 10
-        ) / 10,
-      profit:
-        Math.round((row["Zysk netto"] / row["Liczba akcji"]) * 1000 * 10) / 10,
-      price: row["Kurs"],
-    };
-  });
+  const chartData = data!
+    .map((row) => {
+      return {
+        year: row.year,
+        revenue:
+          Math.round(
+            (row["Przychody ze sprzedaży"] / row["Liczba akcji"]) * 1000 * 10
+          ) / 10,
+        profit:
+          Math.round((row["Zysk netto"] / row["Liczba akcji"]) * 1000 * 10) /
+          10,
+        price: row["Kurs"],
+      };
+    })
+    .filter((item) => item.price > 0);
 
   return <Chart chartConfig={chartConfig} chartData={chartData} />;
 }

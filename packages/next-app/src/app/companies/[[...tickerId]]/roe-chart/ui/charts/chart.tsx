@@ -58,8 +58,8 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
 
     const minDomain = Math.round(Math.min(minRoa, minRoe));
     return [
-      minDomain >= 0 ? 0 : minDomain - 0.05,
-      Math.ceil(Math.max(maxRoa, maxRoe)) + 0.05,
+      minDomain >= 0 ? 0 : minDomain - 0.02,
+      Math.max(maxRoa, maxRoe) + 0.02,
     ];
   }, [finalChartData]);
 
@@ -79,9 +79,17 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           tickLine={false}
           tickMargin={10}
           axisLine={false}
-          // tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) => Number(value * 100).toFixed(0) + "%"}
         />
-        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartTooltip
+          content={
+            <ChartTooltipContent
+              valueFormatter={(value) =>
+                (Number(value as string) * 100).toFixed(0) + "%"
+              }
+            />
+          }
+        />
         <ChartLegend content={<ChartLegendContent />} />
         <Bar dataKey="roe" fill="var(--color-roe)" radius={4} />
         <Bar dataKey="roa" fill="var(--color-roa)" radius={4} />

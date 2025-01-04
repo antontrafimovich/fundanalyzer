@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
+import { ValueType } from "recharts/types/component/DefaultTooltipContent";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -110,6 +111,7 @@ const ChartTooltipContent = React.forwardRef<
       indicator?: "line" | "dot" | "dashed";
       nameKey?: string;
       labelKey?: string;
+      valueFormatter?: (value: ValueType) => React.ReactNode;
     }
 >(
   (
@@ -126,6 +128,7 @@ const ChartTooltipContent = React.forwardRef<
       formatter,
       color,
       nameKey,
+      valueFormatter = (value) => value.toLocaleString(),
       labelKey,
     },
     ref
@@ -239,7 +242,7 @@ const ChartTooltipContent = React.forwardRef<
                       </div>
                       {item.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {valueFormatter(item.value)}
                         </span>
                       )}
                     </div>
