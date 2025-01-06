@@ -11,6 +11,7 @@ import InfoTable from "./info-table/info-table";
 import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
 import RevenueChart from "./revenue-chart/revenue-chart";
 import ReturnChart from "./roe-chart/roe-chart";
+import { getTickerInfo } from "./api/ticker-info.api";
 
 export default async function Page({
   params,
@@ -26,6 +27,8 @@ export default async function Page({
       </Card>
     );
   }
+
+  await getTickerInfo(tickerId);
 
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
