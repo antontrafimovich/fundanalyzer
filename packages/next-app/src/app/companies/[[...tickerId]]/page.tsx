@@ -28,7 +28,10 @@ export default async function Page({
     );
   }
 
+  console.log('start loading data in page.tsx');
+  
   await getTickerInfo(tickerId);
+  console.log('finish loading data in page.tsx');
 
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">

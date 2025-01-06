@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
+  console.log('showing loading skeleton in loading.tsx');
+
   return (
     <Card className="flex flex-1 min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
       <div className="flex-1 p-6 flex-col space-y-6">
