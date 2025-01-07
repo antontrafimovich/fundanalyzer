@@ -32,20 +32,23 @@ export type ChartProps = {
 export default function Chart({ chartConfig, chartData }: ChartProps) {
   const minRevenue = Math.min(...chartData.map((item) => item.revenue));
   const minProfit = Math.min(...chartData.map((item) => item.profit));
-  const minPrice = Math.min(...chartData.map((item) => item.price));
   const maxRevenue = Math.max(...chartData.map((item) => item.revenue));
   const maxProfit = Math.max(...chartData.map((item) => item.profit));
   const maxPrice = Math.max(...chartData.map((item) => item.price));
 
-  const minDomain = Math.round(Math.min(minRevenue, minProfit));
+  const minDomain = Math.floor(Math.min(minRevenue, minProfit));
+  const maxDomain = Math.ceil(Math.max(maxRevenue, maxProfit));
+
+  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
+
   const yDomain = [
-    minDomain >= 0 ? 0 : minDomain - 5,
-    Math.ceil(Math.max(maxRevenue, maxProfit)) + 5,
+    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
+    maxDomain + maxAbsDomain * 0.1,
   ];
 
   const priceDomain = [
-    Math.ceil(minPrice < 5 ? minPrice : minPrice - 5),
-    Math.round(Math.ceil(maxPrice + 5) / 10) * 10,
+    0,
+    Math.floor(maxPrice * 1.1 * 10) / 10,
   ];
 
   return (

@@ -57,9 +57,13 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
     const maxRoe = Math.max(...finalChartData.map((item) => item.roe));
 
     const minDomain = Math.round(Math.min(minRoa, minRoe));
+    const maxDomain = Math.max(maxRoa, maxRoe);
+
+    const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
+
     return [
-      minDomain >= 0 ? 0 : minDomain - 0.02,
-      Math.max(maxRoa, maxRoe) + 0.02,
+      minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
+      maxDomain + maxAbsDomain * 0.1,
     ];
   }, [finalChartData]);
 

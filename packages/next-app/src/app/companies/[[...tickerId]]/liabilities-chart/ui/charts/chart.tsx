@@ -37,18 +37,18 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
   const maxBookValue = Math.max(...chartData.map((item) => item.bookValue));
   const maxPrice = Math.max(...chartData.map((item) => item.price));
 
-  const minDomain = Math.round(
+  const minDomain = Math.floor(
     Math.min(minLiabilities, minBookValue, minPrice)
   );
-  const yDomain = [
-    minDomain >= 0 ? 0 : minDomain - 5,
-    Math.ceil(Math.max(maxLiabilities, maxBookValue, maxPrice)) + 5,
-  ];
 
-  // const priceDomain = [
-  //   Math.ceil(minPrice < 5 ? minPrice : minPrice - 5),
-  //   Math.round(Math.ceil(maxPrice + 5) / 10) * 10,
-  // ];
+  const maxDomain = Math.ceil(Math.max(maxLiabilities, maxBookValue, maxPrice));
+
+  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
+
+  const yDomain = [
+    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
+    maxDomain + maxAbsDomain * 0.1,
+  ];
 
   return (
     <ChartContainer config={chartConfig} className="size-full">

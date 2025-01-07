@@ -49,13 +49,19 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
     ...chartData.map((item) => item.financeCashflow)
   );
 
+  const minDomain = Math.floor(
+    Math.min(minOperationalCashflow, minInvestCashflow, minFinanceCashflow)
+  );
+
+  const maxDomain = Math.ceil(
+    Math.max(maxOperationalCashflow, maxInvestCashflow, maxFinanceCashflow)
+  );
+
+  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
+
   const yDomain = [
-    Math.round(
-      Math.min(minOperationalCashflow, minInvestCashflow, minFinanceCashflow)
-    ) - 5,
-    Math.round(
-      Math.max(maxOperationalCashflow, maxInvestCashflow, maxFinanceCashflow)
-    ) + 5,
+    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
+    maxDomain + maxAbsDomain * 0.1,
   ];
 
   console.log(yDomain);
