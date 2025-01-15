@@ -77,10 +77,7 @@ export function mapTickerInfoApiToDm(
 
       const mappedRow = Object.keys(row).reduce<TickerInfo>((acc, key) => {
         if (key === "Data publikacji") {
-          return {
-            ...acc,
-            [key]: row[key],
-          } as TickerInfo;
+          return acc;
         }
 
         if (key === "year") {

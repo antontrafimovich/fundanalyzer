@@ -53,7 +53,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
 
   return (
     <ChartContainer config={chartConfig} className="size-full">
-      <ComposedChart data={chartData} margin={{ left: 0 }} cx={5}>
+      <ComposedChart data={chartData} margin={{ left: 0 }} cx={5} throttleDelay={100}>
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="year"
