@@ -30,30 +30,14 @@ export type ChartProps = {
 };
 
 export default function Chart({ chartConfig, chartData }: ChartProps) {
-  const minRevenue = Math.min(...chartData.map((item) => item.revenue));
-  const minProfit = Math.min(...chartData.map((item) => item.profit));
-  const maxRevenue = Math.max(...chartData.map((item) => item.revenue));
-  const maxProfit = Math.max(...chartData.map((item) => item.profit));
-  const maxPrice = Math.max(...chartData.map((item) => item.price));
-
-  const minDomain = Math.floor(Math.min(minRevenue, minProfit));
-  const maxDomain = Math.ceil(Math.max(maxRevenue, maxProfit));
-
-  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
-
-  const yDomain = [
-    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
-    maxDomain + maxAbsDomain * 0.1,
-  ];
-
-  const priceDomain = [
-    0,
-    Math.floor(maxPrice * 1.1 * 10) / 10,
-  ];
-
   return (
     <ChartContainer config={chartConfig} className="size-full">
-      <ComposedChart data={chartData} margin={{ left: 0 }} cx={5} throttleDelay={100}>
+      <ComposedChart
+        data={chartData}
+        margin={{ left: 0 }}
+        cx={5}
+        throttleDelay={100}
+      >
         <CartesianGrid vertical={false} />
         <XAxis
           dataKey="year"
@@ -64,7 +48,16 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
         />
         <YAxis
           allowDecimals={false}
-          domain={yDomain}
+          domain={([dataMin, dataMax]) => {
+            const absMax = Math.max(
+              Math.abs(Math.floor(dataMin)),
+              Math.abs(Math.ceil(dataMax))
+            );
+            return [
+              dataMin >= 0 ? 0 : dataMin - absMax * 0.1,
+              dataMax + absMax * 0.1,
+            ];
+          }}
           tickLine={false}
           tickMargin={10}
           axisLine={false}
@@ -72,7 +65,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={priceDomain}
+          domain={[0, (dataMax) => Math.floor(dataMax * 1.1 * 10) / 10]}
           tickLine={false}
           tickMargin={10}
           axisLine={false}

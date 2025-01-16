@@ -30,26 +30,6 @@ export type ChartProps = {
 };
 
 export default function Chart({ chartConfig, chartData }: ChartProps) {
-  const minLiabilities = Math.min(...chartData.map((item) => item.liabilities));
-  const minBookValue = Math.min(...chartData.map((item) => item.bookValue));
-  const minPrice = Math.min(...chartData.map((item) => item.price));
-  const maxLiabilities = Math.max(...chartData.map((item) => item.liabilities));
-  const maxBookValue = Math.max(...chartData.map((item) => item.bookValue));
-  const maxPrice = Math.max(...chartData.map((item) => item.price));
-
-  const minDomain = Math.floor(
-    Math.min(minLiabilities, minBookValue, minPrice)
-  );
-
-  const maxDomain = Math.ceil(Math.max(maxLiabilities, maxBookValue, maxPrice));
-
-  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
-
-  const yDomain = [
-    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
-    maxDomain + maxAbsDomain * 0.1,
-  ];
-
   return (
     <ChartContainer config={chartConfig} className="size-full">
       <BarChart stackOffset="sign" data={chartData}>
@@ -62,7 +42,16 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={yDomain}
+          domain={([dataMin, dataMax]) => {
+            const absMax = Math.max(
+              Math.abs(Math.ceil(dataMin)),
+              Math.abs(Math.floor(dataMax))
+            );
+            return [
+              dataMin >= 0 ? 0 : dataMin - absMax * 0.1,
+              dataMax + absMax * 0.1,
+            ];
+          }}
           tickLine={false}
           tickMargin={10}
           axisLine={false}

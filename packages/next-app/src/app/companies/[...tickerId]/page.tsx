@@ -15,9 +15,9 @@ import RevenueChart from "./revenue-chart/revenue-chart";
 import ReturnChart from "./roe-chart/roe-chart";
 import { AppSidebar } from "./ui/sidebar/sidebar";
 
-export async function generateStaticParams() {
-  return [{ tickerId: ["CD-PROJEKT"] }];
-}
+// export async function generateStaticParams() {
+//   return [{ tickerId: ["CD-PROJEKT"] }];
+// }
 
 export default async function Page({
   params,

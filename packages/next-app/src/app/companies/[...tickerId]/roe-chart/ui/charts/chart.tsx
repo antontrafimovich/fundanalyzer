@@ -50,23 +50,6 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
     }, []);
   }, [chartData]);
 
-  const returnDomain = useMemo(() => {
-    const minRoa = Math.min(...finalChartData.map((item) => item.roa));
-    const minRoe = Math.min(...finalChartData.map((item) => item.roe));
-    const maxRoa = Math.max(...finalChartData.map((item) => item.roa));
-    const maxRoe = Math.max(...finalChartData.map((item) => item.roe));
-
-    const minDomain = Math.round(Math.min(minRoa, minRoe));
-    const maxDomain = Math.max(maxRoa, maxRoe);
-
-    const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
-
-    return [
-      minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
-      maxDomain + maxAbsDomain * 0.1,
-    ];
-  }, [finalChartData]);
-
   return (
     <ChartContainer config={chartConfig} className="size-full">
       <ComposedChart accessibilityLayer data={finalChartData}>
@@ -79,7 +62,17 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={returnDomain}
+          domain={([dataMin, dataMax]) => {
+            const absMax = Math.max(
+              Math.abs(Math.round(dataMin)),
+              Math.abs(dataMax)
+            );
+
+            return [
+              dataMin >= 0 ? 0 : dataMin - absMax * 0.1,
+              dataMax + absMax * 0.1,
+            ];
+          }}
           tickLine={false}
           tickMargin={10}
           axisLine={false}

@@ -29,43 +29,6 @@ export type ChartProps = {
 };
 
 export default function Chart({ chartConfig, chartData }: ChartProps) {
-  const minOperationalCashflow = Math.min(
-    ...chartData.map((item) => item.operationalCashflow)
-  );
-  const minInvestCashflow = Math.min(
-    ...chartData.map((item) => item.investCashflow)
-  );
-  const minFinanceCashflow = Math.min(
-    ...chartData.map((item) => item.financeCashflow)
-  );
-  const maxOperationalCashflow = Math.max(
-    ...chartData.map((item) => item.operationalCashflow)
-  );
-  const maxInvestCashflow = Math.max(
-    ...chartData.map((item) => item.investCashflow)
-  );
-
-  const maxFinanceCashflow = Math.max(
-    ...chartData.map((item) => item.financeCashflow)
-  );
-
-  const minDomain = Math.floor(
-    Math.min(minOperationalCashflow, minInvestCashflow, minFinanceCashflow)
-  );
-
-  const maxDomain = Math.ceil(
-    Math.max(maxOperationalCashflow, maxInvestCashflow, maxFinanceCashflow)
-  );
-
-  const maxAbsDomain = Math.max(Math.abs(minDomain), Math.abs(maxDomain));
-
-  const yDomain = [
-    minDomain >= 0 ? 0 : minDomain - maxAbsDomain * 0.1,
-    maxDomain + maxAbsDomain * 0.1,
-  ];
-
-  console.log(yDomain);
-
   return (
     <ChartContainer config={chartConfig} className="size-full">
       <BarChart stackOffset="sign" data={chartData}>
@@ -78,7 +41,16 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={yDomain}
+          domain={([dataMin, dataMax]) => {
+            const absMax = Math.max(
+              Math.abs(Math.ceil(dataMin)),
+              Math.abs(Math.floor(dataMax))
+            );
+            return [
+              dataMin >= 0 ? 0 : dataMin - absMax * 0.1,
+              dataMax + absMax * 0.1,
+            ];
+          }}
           tickLine={false}
           tickMargin={10}
           axisLine={false}
