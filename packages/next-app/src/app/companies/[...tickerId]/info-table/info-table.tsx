@@ -15,9 +15,9 @@ export default async function InfoTable({ tickerId }: { tickerId: string }) {
   return (
     <>
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="flex items-center gap-1">
           <SidebarTrigger />
-          {company.text}
+          <span>{company.text}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 min-h-0 pr-1">
