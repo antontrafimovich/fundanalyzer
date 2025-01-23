@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import { mapTickerInfoApiToDm } from "./ticker-info.api-mapper";
 import {
   AssetsInfoApi,

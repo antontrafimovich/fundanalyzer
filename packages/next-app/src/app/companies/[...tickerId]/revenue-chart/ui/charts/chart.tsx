@@ -65,7 +65,7 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           // tickFormatter={(value) => value.slice(0, 3)}
         />
         <YAxis
-          domain={[0, (dataMax) => Math.floor(dataMax * 1.1 * 10) / 10]}
+          domain={[0, (dataMax: number) => Math.floor(dataMax * 1.1 * 10) / 10]}
           tickLine={false}
           tickMargin={10}
           axisLine={false}
