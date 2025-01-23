@@ -1,5 +1,6 @@
 "use client";
 
+import { formatNumber } from "@/app/shared/utils/number";
 import {
   ChartConfig,
   ChartContainer,
@@ -62,7 +63,9 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           tickMargin={10}
           axisLine={false}
           yAxisId={"revenue"}
-          // tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) =>
+            value % 1 === 0 ? value.toString() : formatNumber(value, ".1f")
+          }
         />
         <YAxis
           domain={[0, (dataMax: number) => Math.floor(dataMax * 1.1 * 10) / 10]}
@@ -71,7 +74,9 @@ export default function Chart({ chartConfig, chartData }: ChartProps) {
           axisLine={false}
           orientation="right"
           yAxisId={"price"}
-          // tickFormatter={(value) => value.slice(0, 3)}
+          tickFormatter={(value) =>
+            value % 1 === 0 ? value.toString() : formatNumber(value, ".1f")
+          }
         />
         <ChartTooltip content={<ChartTooltipContent />} />
         <ChartLegend content={<ChartLegendContent />} />
