@@ -24,7 +24,7 @@ export default async function CashflowChart({
 }) {
   const data = await getTickerInfo(tickerId);
 
-  const chartData = data!.map((row) => {
+  const chartData = data!.yearToYearData.map((row) => {
     return {
       year: row.year,
       operationalCashflow:

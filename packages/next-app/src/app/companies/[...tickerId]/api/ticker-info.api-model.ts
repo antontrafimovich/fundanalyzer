@@ -22,3 +22,9 @@ export type CashflowInfoApi = {
   "Przepływy pieniężne z działalności inwestycyjnej": string;
   "Przepływy pieniężne z działalności finansowej": string;
 };
+
+export type CommonDataApi = {
+  currentPrice: string;
+  companyDescription: string;
+  website: string;
+};

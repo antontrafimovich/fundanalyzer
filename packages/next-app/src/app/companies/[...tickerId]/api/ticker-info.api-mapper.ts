@@ -1,10 +1,11 @@
 import { AssetsInfo } from "../../../model/assets-info";
 import { CashflowInfo } from "../../../model/cashflow-info";
 import { ShareInfo } from "../../../model/share-info";
-import { TickerInfo } from "../../../model/ticker-info";
+import { TickerInfo, TickerYearInfo } from "../../../model/ticker-info";
 import {
   AssetsInfoApi,
   CashflowInfoApi,
+  CommonDataApi,
   ShareInfoApi,
   TickerInfoApi,
 } from "./ticker-info.api-model";
@@ -13,8 +14,9 @@ export function mapTickerInfoApiToDm(
   tickerInfo: TickerInfoApi[],
   sharesInfo: ShareInfoApi[],
   assetsInfo: AssetsInfoApi[],
-  cashflowInfo: CashflowInfoApi[]
-): TickerInfo[] {
+  cashflowInfo: CashflowInfoApi[],
+  commonData: CommonDataApi
+): TickerInfo {
   const sharesMap: {
     [key: string]: ShareInfo;
   } = sharesInfo.reduce((result, item) => {
@@ -67,8 +69,8 @@ export function mapTickerInfoApiToDm(
     };
   }, {});
 
-  return tickerInfo
-    .map<TickerInfo>((row, index) => {
+  const yToYData = tickerInfo
+    .map((row, index) => {
       const sharesRow =
         sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
 
@@ -98,7 +100,14 @@ export function mapTickerInfoApiToDm(
         ...mappedRow,
         ...assetsRow,
         ...cashflowRow,
-      } as unknown as TickerInfo;
+      } as unknown as TickerYearInfo;
     })
     .slice(Math.max(tickerInfo.length - 11, 0));
+
+  return {
+    price: Number(commonData.currentPrice),
+    description: commonData.companyDescription,
+    website: commonData.website,
+    yearToYearData: yToYData,
+  };
 }

@@ -20,7 +20,7 @@ const chartConfig = {
 export default async function RevenueChart({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
 
-  const chartData = data!
+  const chartData = data!.yearToYearData
     .map((row) => {
       return {
         year: row.year,

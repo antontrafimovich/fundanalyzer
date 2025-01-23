@@ -16,7 +16,7 @@ const chartConfig = {
 export default async function ReturnChart({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
 
-  const chartData = data!.map((row) => {
+  const chartData = data!.yearToYearData.map((row) => {
     return {
       year: row.year,
       roa:

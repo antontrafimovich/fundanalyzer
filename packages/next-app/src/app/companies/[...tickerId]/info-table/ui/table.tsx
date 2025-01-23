@@ -1,11 +1,12 @@
 "use client";
 
-import { TickerInfo } from "@/app/model/ticker-info";
-import { formatNumber } from "@/app/shared/utils/number";
-import AgGridTable from "@/components/ui/ag-grid-table/ag-grid-table";
+import { TickerYearInfo } from '@/app/model/ticker-info';
+import { formatNumber } from '@/app/shared/utils/number';
+import AgGridTable from '@/components/ui/ag-grid-table/ag-grid-table';
+
 
 export type TableProps = {
-  data: TickerInfo[];
+  data: TickerYearInfo[];
 };
 
 const BOLD_KEYS = [

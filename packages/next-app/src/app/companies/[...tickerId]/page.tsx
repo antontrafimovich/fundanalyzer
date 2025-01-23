@@ -34,10 +34,7 @@ export default async function Page({
     );
   }
 
-  console.log("start loading data in page.tsx");
-
   await getTickerInfo(tickerId);
-  console.log("finish loading data in page.tsx");
 
   return (
     <SidebarProvider className="min-h-0 flex-1">

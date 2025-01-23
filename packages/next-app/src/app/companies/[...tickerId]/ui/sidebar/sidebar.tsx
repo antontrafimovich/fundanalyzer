@@ -1,10 +1,11 @@
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
-import { getTickerInfo } from "../../api/ticker-info.api";
 import { formatNumber } from "@/app/shared/utils/number";
+import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+
+import { getTickerInfo } from "../../api/ticker-info.api";
 
 export async function AppSidebar({ tickerId }: { tickerId: string }) {
   const tickerInfo = (await getTickerInfo(tickerId))!;
-  const lastYearTickerInfo = tickerInfo.at(-1)!;
+  const lastYearTickerInfo = tickerInfo.yearToYearData.at(-1)!;
 
   const cToZ =
     lastYearTickerInfo["Kurs"] /
@@ -12,7 +13,7 @@ export async function AppSidebar({ tickerId }: { tickerId: string }) {
       1000);
 
   const cToZFive =
-    tickerInfo.slice(-6, -1).reduce((result, item) => {
+    tickerInfo.yearToYearData.slice(-6, -1).reduce((result, item) => {
       return (
         result +
         item["Kurs"] / ((item["Zysk netto"] / item["Liczba akcji"]) * 1000)
@@ -41,6 +42,18 @@ export async function AppSidebar({ tickerId }: { tickerId: string }) {
           <li className="py-1">
             <span className="font-bold">C/Z 5 Years</span>:{" "}
             {formatNumber(cToZFive, ".2f")}
+          </li>
+          <li className="py-1">
+            <span className="font-bold">Current Price</span>:{" "}
+            {formatNumber(tickerInfo.price, ".2f")}
+          </li>
+          <li className="py-1">
+            <span className="font-bold">Description</span>:{" "}
+            {tickerInfo.description}
+          </li>
+          <li className="py-1">
+            <span className="font-bold">Website</span>:{" "}
+            {tickerInfo.website}
           </li>
         </ul>
       </SidebarContent>
