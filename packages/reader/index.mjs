@@ -8,6 +8,7 @@ const domain = process.env.DOMAIN;
 
 const profitAndLossPageRoute = process.env.PROFIT_AND_LOSS_PAGE_ROUTE;
 const balanceReportPageRoute = process.env.BALANCE_REPORT_PAGE_ROUTE;
+const commonDataPageRoute = process.env.COMMON_DATA_PAGE_ROUTE;
 const cashflowReportPageRoute = process.env.CASHFLOW_REPORT_PAGE_ROUTE;
 
 const ratiosPageRoute = process.env.RATIOS_PAGE_ROUTE;
@@ -51,6 +52,20 @@ const getData = async (url) => {
   }
 
   return fiancialDataPerYear;
+};
+
+const getCommonData = async (company) => {
+  const fetchUrl = `${domain}/${commonDataPageRoute}/${company}`;
+  const document = await fetchAndParseHTML(fetchUrl);
+  const currentPrice = document.querySelector(".q_ch_act").innerText.trim();
+  const companyDescription = document
+    .querySelector(".profileDesc > p > .hidden")
+    .innerText.trim();
+  const website = document
+    .querySelector(".profileSummary.hidden > tr:last-child a")
+    .innerText.trim();
+
+  return { currentPrice, companyDescription, website };
 };
 
 const server = createServer(async (req, res) => {
@@ -117,10 +132,23 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  if (req.method === "GET" && segment) {
-    const fetchUrl = `${domain}/${profitAndLossPageRoute}/${segment}`;
+  if (req.method === "GET" && segment === "pnl" && payload) {
+    const fetchUrl = `${domain}/${profitAndLossPageRoute}/${payload}`;
     try {
       const data = await getData(fetchUrl);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(data));
+    } catch (error) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal Server Error");
+    }
+
+    return;
+  }
+
+  if (req.method === "GET" && segment) {
+    try {
+      const data = await getCommonData(segment);
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
