@@ -1,19 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Suspense } from "react";
+import { Card, CardTitle } from '@/components/ui/card';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Suspense } from 'react';
 
-import { getTickerInfo } from "./api/ticker-info.api";
-import CashflowChart from "./cashflow-chart/cashflow-chart";
-import InfoTable from "./info-table/info-table";
-import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
-import RevenueChart from "./revenue-chart/revenue-chart";
-import ReturnChart from "./roe-chart/roe-chart";
-import { AppSidebar } from "./ui/sidebar/sidebar";
+import { getTickerInfo } from './api/ticker-info.api';
+import CashflowChart from './cashflow-chart/cashflow-chart';
+import InfoTable from './info-table/info-table';
+import LiabilitiesChart from './liabilities-chart/liabilities-chart';
+import RevenueChart from './revenue-chart/revenue-chart';
+import ReturnChart from './roe-chart/roe-chart';
+import { ResizableChartLayout } from './ui/chart-layout/resizable-chart-layout';
+import { Panel } from './ui/panel/panel';
+import { AppSidebar } from './ui/sidebar/sidebar';
 
 // export async function generateStaticParams() {
 //   return [{ tickerId: ["CD-PROJEKT"] }];
@@ -53,59 +51,53 @@ export default async function Page({
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel defaultSize={60} className="flex flex-col">
-              <ResizablePanelGroup direction="vertical">
-                <ResizablePanel defaultSize={50} className="flex flex-col">
-                  <ResizablePanelGroup direction="horizontal">
-                    <ResizablePanel defaultSize={50} className="flex flex-col">
-                      <Suspense fallback={<>Loading Revenue Chart...</>}>
-                        <CardHeader>
-                          <CardTitle>Revenue Chart</CardTitle>
-                        </CardHeader>
-                        <CardContent className="overflow-auto p-0 pb-6 flex-1 min-h-0">
-                          <RevenueChart tickerId={tickerId} />
-                        </CardContent>
-                      </Suspense>
-                    </ResizablePanel>
-                    <ResizableHandle withHandle />
-                    <ResizablePanel defaultSize={50} className="flex flex-col">
-                      <Suspense fallback={<>Loading Liabilities Chart...</>}>
-                        <CardHeader>
-                          <CardTitle>Liabilities Chart</CardTitle>
-                        </CardHeader>
-                        <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
-                          <LiabilitiesChart tickerId={tickerId} />
-                        </CardContent>
-                      </Suspense>
-                    </ResizablePanel>
-                  </ResizablePanelGroup>
-                </ResizablePanel>
-                <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={50}>
-                  <ResizablePanelGroup direction="horizontal">
-                    <ResizablePanel defaultSize={50} className="flex flex-col">
-                      <Suspense fallback={<>Loading Return Chart...</>}>
-                        <CardHeader>
-                          <CardTitle>Profitability Chart</CardTitle>
-                        </CardHeader>
-                        <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
-                          <ReturnChart tickerId={tickerId} />
-                        </CardContent>
-                      </Suspense>
-                    </ResizablePanel>
-                    <ResizableHandle withHandle />
-                    <ResizablePanel defaultSize={50} className="flex flex-col">
-                      <Suspense fallback={<>Loading Cashflow Chart...</>}>
-                        <CardHeader>
-                          <CardTitle>Cashflow Chart</CardTitle>
-                        </CardHeader>
-                        <CardContent className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
-                          <CashflowChart tickerId={tickerId} />
-                        </CardContent>
-                      </Suspense>
-                    </ResizablePanel>
-                  </ResizablePanelGroup>
-                </ResizablePanel>
-              </ResizablePanelGroup>
+              <ResizableChartLayout
+                blocks={[
+                  <Suspense fallback={<>Loading Revenue Chart...</>} key={0}>
+                    <Panel>
+                      <Panel.Header>
+                        <CardTitle>Revenue Chart</CardTitle>
+                      </Panel.Header>
+                      <Panel.Content className="overflow-auto p-0 pb-6 flex-1 min-h-0">
+                        <RevenueChart tickerId={tickerId} />
+                      </Panel.Content>
+                    </Panel>
+                  </Suspense>,
+                  <Suspense
+                    fallback={<>Loading Liabilities Chart...</>}
+                    key={1}
+                  >
+                    <Panel>
+                      <Panel.Header>
+                        <CardTitle>Liabilities Chart</CardTitle>
+                      </Panel.Header>
+                      <Panel.Content className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
+                        <LiabilitiesChart tickerId={tickerId} />
+                      </Panel.Content>
+                    </Panel>
+                  </Suspense>,
+                  <Suspense fallback={<>Loading Return Chart...</>} key={2}>
+                    <Panel>
+                      <Panel.Header>
+                        <CardTitle>Profitability Chart</CardTitle>
+                      </Panel.Header>
+                      <Panel.Content className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
+                        <ReturnChart tickerId={tickerId} />
+                      </Panel.Content>
+                    </Panel>
+                  </Suspense>,
+                  <Suspense fallback={<>Loading Cashflow Chart...</>} key={3}>
+                    <Panel>
+                      <Panel.Header>
+                        <CardTitle>Cashflow Chart</CardTitle>
+                      </Panel.Header>
+                      <Panel.Content className="overflow-auto p-0 pb-6 pr-6 flex-1 min-h-0">
+                        <CashflowChart tickerId={tickerId} />
+                      </Panel.Content>
+                    </Panel>
+                  </Suspense>,
+                ]}
+              />
             </ResizablePanel>
           </ResizablePanelGroup>
         </Card>
