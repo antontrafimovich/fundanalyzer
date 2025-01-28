@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Combobox,
@@ -92,7 +92,7 @@ export const SearchResultsList = ({ items }: { items: CompanyInfo[] }) => {
             <ComboboxOption
               key={virtualItem.key}
               value={items[virtualItem.index].ticker}
-              className="flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none  hover:bg-accent hover:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+              className="flex cursor-pointer gap-2 select-none items-center data-[highlighted]:bg-accent rounded-sm px-2 py-1.5 text-sm outline-none  hover:bg-accent hover:text-accent-foreground"
               style={{
                 position: "absolute",
                 top: 0,

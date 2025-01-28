@@ -4,7 +4,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Suspense } from "react";
 
 import { getTickerInfo } from "./api/ticker-info.api";
@@ -39,7 +39,11 @@ export default async function Page({
   return (
     <SidebarProvider className="min-h-0 flex-1">
       <AppSidebar tickerId={tickerId} />
-      <main className="flex-1 min-w-0">
+      <main className="flex-1 min-w-0 relative">
+        <div className="absolute w-[30px] flex items-center justify-center h-[60px] rounded-2xl bg-[#f9fafb] cursor-pointer border border-[#e7e7e9] left-[-15px] z-50 bottom-0 top-0 m-[auto]">
+          <SidebarTrigger />
+        </div>
+
         <Card className="flex flex-1 min-h-0 border-t-0 h-full border-border rounded-tl-none rounded-bl-none border-l-0">
           <ResizablePanelGroup direction="horizontal" className="size-full">
             <ResizablePanel defaultSize={40} className="flex flex-col">

@@ -2,13 +2,14 @@ import { formatNumber } from "@/app/shared/utils/number";
 import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
 
 import { getTickerInfo } from "../../api/ticker-info.api";
+import Link from "next/link";
 
 export async function AppSidebar({ tickerId }: { tickerId: string }) {
   const tickerInfo = (await getTickerInfo(tickerId))!;
   const lastYearTickerInfo = tickerInfo.yearToYearData.at(-1)!;
 
   const cToZ =
-    lastYearTickerInfo["Kurs"] /
+    tickerInfo.price /
     ((lastYearTickerInfo["Zysk netto"] / lastYearTickerInfo["Liczba akcji"]) *
       1000);
 
@@ -22,7 +23,7 @@ export async function AppSidebar({ tickerId }: { tickerId: string }) {
 
   return (
     <Sidebar className="h-auto" collapsible="icon">
-      <SidebarContent>
+      <SidebarContent className="relative">
         <h1 className="text-xl font-bold pt-6 pl-6">Summary</h1>
         <ul className="p-6 font-sans">
           <li className="py-1">
@@ -52,8 +53,7 @@ export async function AppSidebar({ tickerId }: { tickerId: string }) {
             {tickerInfo.description}
           </li>
           <li className="py-1">
-            <span className="font-bold">Website</span>:{" "}
-            {tickerInfo.website}
+            <span className="font-bold">Website</span>: <Link href={tickerInfo.website} passHref target="_blank" className="underline text-[-webkit-link]">{tickerInfo.website}</Link>
           </li>
         </ul>
       </SidebarContent>

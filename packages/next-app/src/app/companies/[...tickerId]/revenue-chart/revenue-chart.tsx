@@ -21,7 +21,7 @@ export default async function RevenueChart({ tickerId }: { tickerId: string }) {
   const data = await getTickerInfo(tickerId);
 
   const chartData = data!.yearToYearData
-    .map((row) => {
+    .map((row, index, y2yData) => {
       return {
         year: row.year,
         revenue:
@@ -31,7 +31,7 @@ export default async function RevenueChart({ tickerId }: { tickerId: string }) {
         profit:
           Math.round((row["Zysk netto"] / row["Liczba akcji"]) * 1000 * 10) /
           10,
-        price: row["Kurs"],
+        price: index === y2yData.length - 1 ? data!.price : row["Kurs"],
       };
     })
     .filter((item) => item.price > 0);

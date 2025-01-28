@@ -1,6 +1,5 @@
 import { getTickers } from '@/app/actions/get-tickers';
 import { CardTitle } from '@/components/ui/card';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 
 import { getTickerInfo } from '../api/ticker-info.api';
 import { Panel } from '../ui/panel/panel';
@@ -16,7 +15,6 @@ export default async function InfoTable({ tickerId }: { tickerId: string }) {
     <Panel>
       <Panel.Header>
         <CardTitle className="flex items-center gap-1">
-          <SidebarTrigger />
           <span>{company.text}</span>
         </CardTitle>
       </Panel.Header>
