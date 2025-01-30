@@ -9,6 +9,7 @@ const domain = process.env.DOMAIN;
 const profitAndLossPageRoute = process.env.PROFIT_AND_LOSS_PAGE_ROUTE;
 const balanceReportPageRoute = process.env.BALANCE_REPORT_PAGE_ROUTE;
 const commonDataPageRoute = process.env.COMMON_DATA_PAGE_ROUTE;
+const dividendsDataPageRoute = process.env.DIVIDENDS_PAGE_ROUTE;
 const cashflowReportPageRoute = process.env.CASHFLOW_REPORT_PAGE_ROUTE;
 
 const ratiosPageRoute = process.env.RATIOS_PAGE_ROUTE;
@@ -66,6 +67,28 @@ const getCommonData = async (company) => {
     .innerText.trim();
 
   return { currentPrice, companyDescription, website };
+};
+
+const getDividendsData = async (company) => {
+  const fetchUrl = `${domain}/${dividendsDataPageRoute}/${company}`;
+  const document = await fetchAndParseHTML(fetchUrl);
+
+  const rows = document.querySelectorAll(".table-c > table > tr").slice(1);
+  const result = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const [yearItem, , , dividendsItem] = row.querySelectorAll("td");
+    const year = yearItem?.innerText?.trim();
+    const dividend = dividendsItem.innerText.trim();
+
+    result.push({
+      year,
+      dividend: isNaN(Number(dividend.split(' ').join(''))) ? 0 : Number(dividend.split(' ').join('')),
+    });
+  }
+
+  return result;
 };
 
 const server = createServer(async (req, res) => {
@@ -139,6 +162,20 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      res.writeHead(500, { "Content-Type": "text/plain" });
+      res.end("Internal Server Error");
+    }
+
+    return;
+  }
+
+  if (req.method === "GET" && segment === "dividends" && payload) {
+    try {
+      const data = await getDividendsData(payload);
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(data));
+    } catch (error) {
+      console.error(error);
       res.writeHead(500, { "Content-Type": "text/plain" });
       res.end("Internal Server Error");
     }
