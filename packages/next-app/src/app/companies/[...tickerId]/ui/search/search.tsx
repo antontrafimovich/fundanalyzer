@@ -32,7 +32,7 @@ export const Search = ({ items }: SearchProps) => {
     <div className="w-full">
       <Combobox aria-label="Cities" className="w-full" onSelect={appendTab}>
         <ComboboxInput
-          className="flex h-9 w-3/12 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+          className="flex h-9 w-3/5 max-w-2xl rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
           value={term}
           onChange={(event) => {
             console.log(event.target.value);
@@ -92,7 +92,7 @@ export const SearchResultsList = ({ items }: { items: CompanyInfo[] }) => {
             <ComboboxOption
               key={virtualItem.key}
               value={items[virtualItem.index].ticker}
-              className="flex cursor-pointer gap-2 select-none items-center data-[highlighted]:bg-accent rounded-sm px-2 py-1.5 text-sm outline-none  hover:bg-accent hover:text-accent-foreground"
+              className="flex cursor-pointer gap-2 select-none items-center data-[highlighted]:bg-accent rounded-sm px-2 py-4 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
               style={{
                 position: "absolute",
                 top: 0,
