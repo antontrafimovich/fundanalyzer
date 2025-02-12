@@ -29,6 +29,7 @@ export const Table = <T extends DataItem>(props: TableProps<T>) => {
     {
       field: "title" as const,
       resizable: true,
+      headerName: "",
       suppressMovable: true,
       filter: false,
       flex: 1,
@@ -37,36 +38,29 @@ export const Table = <T extends DataItem>(props: TableProps<T>) => {
       cellClass: "hover:bg-table-cellHoverBackground",
       pinned: "left" as const,
     },
-    ...data!.map((row) => ({
-      field: row.year.toString(),
-      filter: false,
-      suppressMovable: true,
-      sortable: false,
-      resizable: false,
-      cellClass: "hover:bg-table-cellHoverBackground",
-      flex: 1,
-      valueFormatter: (props: { value: string | number }) => {
-        const { value } = props;
-        return typeof value === "number" ? formatNumber(value, ",d") : value;
-      },
+    ...Object.keys(data![0])
+      .filter((key) => key !== "year")
+      .map((key) => ({
+        field: key,
+        filter: false,
+        suppressMovable: true,
+        sortable: false,
+        resizable: false,
+        cellClass: "hover:bg-table-cellHoverBackground",
+        flex: 1,
+        valueFormatter: (props: { value: string | number }) => {
+          const { value } = props;
+          return typeof value === "number" ? formatNumber(value, ",d") : value;
+        },
 
-      minWidth: 100,
-    })),
+        minWidth: 100,
+      })),
   ];
 
-  const rows = Object.keys(data![0]).reduce<TableRow[]>((acc, key) => {
-    if (hide && hide.includes(key)) return acc;
+  const rows = data.map((item) => {
+    const { year, ...rest } = item;
 
-    return [
-      ...acc,
-      {
-        title: key,
-        ...data!.reduce(
-          (result, row) => ({ ...result, [row.year]: row[key] }),
-          {}
-        ),
-      },
-    ];
+    return { ...rest, title: year };
   }, []);
 
   return (
