@@ -73,18 +73,20 @@ const getDividendsData = async (company) => {
   const fetchUrl = `${domain}/${dividendsDataPageRoute}/${company}`;
   const document = await fetchAndParseHTML(fetchUrl);
 
-  const rows = document.querySelectorAll(".table-c > table > tr").slice(1);
+  const rows = document.querySelectorAll(".table-c > table > tr")?.slice(1);
   const result = [];
 
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
     const [yearItem, , , dividendsItem] = row.querySelectorAll("td");
-    const year = yearItem?.innerText?.trim();
+    const year = yearItem?.innerText.trim();
     const dividend = dividendsItem.innerText.trim();
 
     result.push({
       year,
-      dividend: isNaN(Number(dividend.split(' ').join(''))) ? 0 : Number(dividend.split(' ').join('')),
+      dividends: isNaN(Number(dividend.split(" ").join("")))
+        ? 0
+        : Number(dividend.split(" ").join("")),
     });
   }
 

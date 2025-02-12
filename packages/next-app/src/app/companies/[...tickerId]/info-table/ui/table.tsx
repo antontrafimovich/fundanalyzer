@@ -1,29 +1,33 @@
 "use client";
 
-import { TickerYearInfo } from '@/app/model/ticker-info';
-import { formatNumber } from '@/app/shared/utils/number';
-import AgGridTable from '@/components/ui/ag-grid-table/ag-grid-table';
+import { formatNumber } from "@/app/shared/utils/number";
+import AgGridTable from "@/components/ui/ag-grid-table/ag-grid-table";
+import { GridOptions } from "ag-grid-community";
 
-
-export type TableProps = {
-  data: TickerYearInfo[];
+type TableRow = {
+  title: string;
+  [key: string]: string | number | null;
 };
 
-const BOLD_KEYS = [
-  "Przychody ze sprzedaży",
-  "Zysk ze sprzedaży",
-  "Zysk operacyjny (EBIT)",
-  "Zysk z działalności gospodarczej",
-  "Zysk przed opodatkowaniem",
-  "Zysk netto",
-  "Zysk netto akcjonariuszy jednostki dominującej",
-  "EBITDA",
-];
+type Column = NonNullable<GridOptions<TableRow>["columnDefs"]>[number];
 
-export const Table = ({ data }: TableProps) => {
-  const columns = [
+type DataItem = {
+  year: string;
+  [key: string]: string | number | null;
+};
+
+type TableProps<T extends DataItem> = {
+  data: T[];
+  hide?: (keyof T)[];
+  boldKeys?: (keyof T)[];
+};
+
+export const Table = <T extends DataItem>(props: TableProps<T>) => {
+  const { data, hide, boldKeys } = props;
+
+  const columns: Column[] = [
     {
-      field: "title",
+      field: "title" as const,
       resizable: true,
       suppressMovable: true,
       filter: false,
@@ -41,7 +45,8 @@ export const Table = ({ data }: TableProps) => {
       resizable: false,
       cellClass: "hover:bg-table-cellHoverBackground",
       flex: 1,
-      valueFormatter: ({ value }: { value: string | number }) => {
+      valueFormatter: (props: { value: string | number }) => {
+        const { value } = props;
         return typeof value === "number" ? formatNumber(value, ",d") : value;
       },
 
@@ -49,10 +54,8 @@ export const Table = ({ data }: TableProps) => {
     })),
   ];
 
-  const rows: Array<Record<string, string | number>> = Object.keys(
-    data![0]
-  ).reduce((acc, key) => {
-    if (key === "year") return acc;
+  const rows = Object.keys(data![0]).reduce<TableRow[]>((acc, key) => {
+    if (hide && hide.includes(key)) return acc;
 
     return [
       ...acc,
@@ -64,21 +67,19 @@ export const Table = ({ data }: TableProps) => {
         ),
       },
     ];
-  }, [] as Array<Record<string, string | number>>);
+  }, []);
 
   return (
     <AgGridTable
+      {...props}
       rowSelection={undefined}
       columnHoverHighlight
       rowClass="even:bg-gray-50"
       rowClassRules={{
-        "font-bold": ({ data }) => BOLD_KEYS.includes(data!.title as string),
+        "font-bold": ({ data }) => boldKeys!.includes(data!.title as string),
       }}
       suppressCellFocus
       columnDefs={columns}
-      //   onGridReady={({ api }) => {
-      //     api.autoSizeAllColumns();
-      //   }}
       rowData={rows}
     />
   );

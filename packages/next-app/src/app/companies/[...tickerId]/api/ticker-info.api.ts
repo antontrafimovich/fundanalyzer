@@ -3,6 +3,7 @@ import {
   AssetsInfoApi,
   CashflowInfoApi,
   CommonDataApi,
+  DividendsInfoApi,
   ShareInfoApi,
   TickerInfoApi,
 } from "./ticker-info.api-model";
@@ -67,6 +68,21 @@ export async function getTickerCommonData(
   tickerId: string
 ): Promise<CommonDataApi> {
   const response = await fetch(`${DOMAIN}/${tickerId}`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    next: {
+      revalidate: 3600,
+    },
+  });
+
+  return response.json();
+}
+
+export async function getDividendsData(
+  tickerId: string
+): Promise<DividendsInfoApi[]> {
+  const response = await fetch(`${DOMAIN}/dividends/${tickerId}`, {
     headers: {
       "Content-Type": "application/json",
     },

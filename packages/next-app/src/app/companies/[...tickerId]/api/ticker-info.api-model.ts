@@ -23,6 +23,11 @@ export type CashflowInfoApi = {
   "Przepływy pieniężne z działalności finansowej": string;
 };
 
+export type DividendsInfoApi = {
+  year: string;
+  dividends: number;
+};
+
 export type CommonDataApi = {
   currentPrice: string;
   companyDescription: string;
