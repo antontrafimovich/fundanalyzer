@@ -22,7 +22,7 @@ type TableProps<T extends DataItem> = {
   boldKeys?: (keyof T)[];
 };
 
-export const Table = <T extends DataItem>(props: TableProps<T>) => {
+export const CommonDataTableClient = <T extends DataItem>(props: TableProps<T>) => {
   const { data, hide, boldKeys } = props;
 
   const columns: Column[] = [

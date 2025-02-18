@@ -18,12 +18,13 @@ type DataItem = {
 
 type TableProps<T extends DataItem> = {
   data: T[];
-  hide?: (keyof T)[];
   boldKeys?: (keyof T)[];
 };
 
-export const Table = <T extends DataItem>(props: TableProps<T>) => {
-  const { data, hide, boldKeys } = props;
+export const DividendsTableClient = <T extends DataItem>(
+  props: TableProps<T>
+) => {
+  const { data, boldKeys } = props;
 
   const columns: Column[] = [
     {
@@ -37,25 +38,38 @@ export const Table = <T extends DataItem>(props: TableProps<T>) => {
       cellClass: "hover:bg-table-cellHoverBackground",
       pinned: "left" as const,
     },
-    ...data!.map((row) => ({
+    ...data!.map<Column>((row) => ({
       field: row.year.toString(),
       filter: false,
       suppressMovable: true,
       sortable: false,
       resizable: false,
+      width: 80,
       cellClass: "hover:bg-table-cellHoverBackground",
-      flex: 1,
-      valueFormatter: (props: { value: string | number }) => {
+      valueFormatter: (props) => {
         const { value } = props;
-        return typeof value === "number" ? formatNumber(value, ",d") : value;
-      },
+        if (typeof value !== "number") {
+          return value;
+        }
 
-      minWidth: 100,
+        if (
+          props.data?.title.includes("Dynamic") ||
+          ["DPR"].includes(props.data!.title)
+        ) {
+          return formatNumber(value, ".0%");
+        }
+
+        if (props.data?.title.includes("DY")) {
+          return formatNumber(value, ".1%");
+        }
+
+        return typeof value === "number" ? formatNumber(value, ",.2f") : value;
+      },
     })),
   ];
 
   const rows = Object.keys(data![0]).reduce<TableRow[]>((acc, key) => {
-    if (hide && hide.includes(key)) return acc;
+    if (["year", "dividends"].includes(key)) return acc;
 
     return [
       ...acc,
@@ -76,7 +90,8 @@ export const Table = <T extends DataItem>(props: TableProps<T>) => {
       columnHoverHighlight
       rowClass="even:bg-gray-50"
       rowClassRules={{
-        "font-bold": ({ data }) => boldKeys!.includes(data!.title as string),
+        "font-bold": ({ data }) =>
+          !!boldKeys && boldKeys.includes(data!.title as string),
       }}
       suppressCellFocus
       columnDefs={columns}

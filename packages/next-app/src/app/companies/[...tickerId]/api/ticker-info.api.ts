@@ -91,7 +91,8 @@ export async function getDividendsData(
     },
   });
 
-  return response.json();
+  const dividendsData = await response.json();
+  return dividendsData.slice(0, 11);
 }
 
 export async function getTickerInfo(tickerId: string) {
