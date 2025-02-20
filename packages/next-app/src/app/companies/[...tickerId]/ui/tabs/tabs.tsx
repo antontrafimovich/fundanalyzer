@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useTabs } from "./use-tabs";
 import { useEffect } from "react";
 
-export const Tabs = ({ active }: { active: string }) => {
+export const Tabs = ({ active }: { active: string | undefined }) => {
   const router = useRouter();
 
   const { tabs, closeTab, appendTab } = useTabs({
@@ -34,14 +34,14 @@ export const Tabs = ({ active }: { active: string }) => {
       appendTab(active);
     }
 
-    if (!active && tabs.length > 0) {
-      router.push(`/companies/${tabs[0]}`);
-    }
+    // if (!active && tabs.length > 0) {
+    //   router.push(`/companies/${tabs[0]}`);
+    // }
   }, []);
 
   return (
     <ShadcnTabs
-      defaultValue={active || tabs[0]}
+      defaultValue={active}
       className="w-[400px]"
       onValueChange={(value) => {
         router.push(`/companies/${value}`);

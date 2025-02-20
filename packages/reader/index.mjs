@@ -99,14 +99,14 @@ const server = createServer(async (req, res) => {
 
   if (req.method === "GET" && segment === "companies") {
     const r = createReadStream("./tickers.json");
-    console.log("Request for companies");
+
     try {
       res.writeHead(200, { "Content-Type": "application/json" });
       await pipeline(r, res);
     } catch (error) {
-      console.error(error);
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -120,8 +120,9 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -135,8 +136,9 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -150,8 +152,9 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -164,8 +167,9 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -179,7 +183,7 @@ const server = createServer(async (req, res) => {
     } catch (error) {
       console.error(error);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
 
     return;
@@ -191,8 +195,9 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(data));
     } catch (error) {
+      console.error(error.message);
       res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end("Internal Server Error");
+      res.end(error.message);
     }
   } else {
     res.writeHead(404, { "Content-Type": "text/plain" });

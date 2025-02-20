@@ -1,7 +1,7 @@
-import { ReactNode, Suspense } from "react";
+import { ReactNode, Suspense } from 'react';
 
-import { SearchServer } from "./ui/search/search-server";
-import { Tabs } from "./ui/tabs/tabs";
+import { SearchServer } from './ui/search/search-server';
+import { Tabs } from './ui/tabs/tabs';
 
 export default async function Layout({
   children,

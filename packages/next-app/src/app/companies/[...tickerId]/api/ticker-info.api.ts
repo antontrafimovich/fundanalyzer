@@ -22,6 +22,13 @@ async function getTickerProfitAndLossData(
     },
   });
 
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch ticker profit and loss data. Details: " +
+        (await response.text())
+    );
+  }
+
   return response.json();
 }
 
@@ -34,6 +41,12 @@ async function getSharesInfo(tickerId: string): Promise<ShareInfoApi[]> {
       revalidate: 3600,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch shares info. Details: " + (await response.text())
+    );
+  }
 
   return response.json();
 }
@@ -48,6 +61,12 @@ async function getAssetsInfo(tickerId: string): Promise<AssetsInfoApi[]> {
     },
   });
 
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch assets info. Details: " + (await response.text())
+    );
+  }
+
   return response.json();
 }
 
@@ -60,6 +79,12 @@ async function getCashflowInfo(tickerId: string): Promise<CashflowInfoApi[]> {
       revalidate: 3600,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch cashflow info. Details: " + (await response.text())
+    );
+  }
 
   return response.json();
 }
@@ -76,6 +101,12 @@ export async function getTickerCommonData(
     },
   });
 
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch common data. Details: " + (await response.text())
+    );
+  }
+
   return response.json();
 }
 
@@ -91,29 +122,31 @@ export async function getDividendsData(
     },
   });
 
+  if (!response.ok) {
+    throw new Error(
+      "Failed to fetch dividends data. Details: " + (await response.text())
+    );
+  }
+
   const dividendsData = await response.json();
   return dividendsData.slice(0, 11);
 }
 
 export async function getTickerInfo(tickerId: string) {
-  try {
-    const [tickerInfo, sharesResponse, assetsInfo, cashflowInfo, commonData] =
-      await Promise.all([
-        getTickerProfitAndLossData(tickerId),
-        getSharesInfo(tickerId),
-        getAssetsInfo(tickerId),
-        getCashflowInfo(tickerId),
-        getTickerCommonData(tickerId),
-      ]);
+  const [tickerInfo, sharesResponse, assetsInfo, cashflowInfo, commonData] =
+    await Promise.all([
+      getTickerProfitAndLossData(tickerId),
+      getSharesInfo(tickerId),
+      getAssetsInfo(tickerId),
+      getCashflowInfo(tickerId),
+      getTickerCommonData(tickerId),
+    ]);
 
-    return mapTickerInfoApiToDm(
-      tickerInfo,
-      sharesResponse,
-      assetsInfo,
-      cashflowInfo,
-      commonData
-    );
-  } catch (err) {
-    console.error(err);
-  }
+  return mapTickerInfoApiToDm(
+    tickerInfo,
+    sharesResponse,
+    assetsInfo,
+    cashflowInfo,
+    commonData
+  );
 }
