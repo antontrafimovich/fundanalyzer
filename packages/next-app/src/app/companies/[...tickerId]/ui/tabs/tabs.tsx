@@ -34,9 +34,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
       appendTab(active);
     }
 
-    // if (!active && tabs.length > 0) {
-    //   router.push(`/companies/${tabs[0]}`);
-    // }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
