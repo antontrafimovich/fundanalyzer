@@ -20,7 +20,7 @@ export default async function Layout({
         </Suspense>
       </div>
       <div className="flex flex-col min-h-0 p-2 pt-0 h-full bg-surface-primary">
-        <Tabs active={activeTicker} />
+        <Tabs active={activeTicker === '_' ? undefined : activeTicker} />
         {children}
       </div>
     </div>

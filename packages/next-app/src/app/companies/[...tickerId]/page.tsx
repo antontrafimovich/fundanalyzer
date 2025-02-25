@@ -24,10 +24,10 @@ export default async function Page({
 }) {
   const [tickerId] = (await params).tickerId ?? [];
 
-  if (!tickerId) {
+  if (!tickerId || tickerId === '_') {
     return (
-      <Card className="flex flex-1 items-center justify-center min-h-0 border-t-0 border-border rounded-tl-none border-l-0">
-        Please select a company from the search bar
+      <Card className="flex flex-1 items-center justify-center min-h-0 font-bold border-t-0 border-border rounded-tl-none border-l-0">
+        Please select a company from the search or open one of the tabs
       </Card>
     );
   }
