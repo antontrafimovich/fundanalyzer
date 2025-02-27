@@ -3,6 +3,7 @@ import { createServer } from "http";
 import process from "node:process";
 import { createReadStream } from "node:fs";
 import { pipeline } from "node:stream/promises";
+import path from "node:path";
 
 const domain = process.env.DOMAIN;
 
@@ -98,7 +99,8 @@ const server = createServer(async (req, res) => {
   const [, segment, payload] = urlParts;
 
   if (req.method === "GET" && segment === "companies") {
-    const r = createReadStream("./tickers.json");
+    const __dirname = import.meta.dirname;
+    const r = createReadStream(path.resolve(__dirname, "tickers.json"));
 
     try {
       res.writeHead(200, { "Content-Type": "application/json" });
