@@ -11,6 +11,8 @@ export const DividendsTable = async ({ tickerId }: { tickerId: string }) => {
       .map((year) => year["Kurs"])
       .reduce((a, b) => a + b, 0) / 4;
 
+  console.log('dividends list', dividends);
+
   const data = dividends.map((dividend, index) => {
     const tickerInfoForYear = tickerInfo.yearToYearData.at((index + 1) * -1);
     const tickerInfoForPrevYear = tickerInfo.yearToYearData.at(
