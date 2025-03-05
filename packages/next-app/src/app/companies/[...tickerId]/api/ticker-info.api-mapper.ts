@@ -1,17 +1,16 @@
+import { AssetsInfoApi } from "@/app/actions/get-assets";
+import { CashflowInfoApi } from "@/app/actions/get-cashflow";
+import { CommonDataApi } from "@/app/actions/get-common-data";
+import { PnlInfoApi } from "@/app/actions/get-pnl";
+import { ShareInfoApi } from "@/app/actions/get-shares";
+
 import { AssetsInfo } from "../../../model/assets-info";
 import { CashflowInfo } from "../../../model/cashflow-info";
 import { ShareInfo } from "../../../model/share-info";
 import { TickerInfo, TickerYearInfo } from "../../../model/ticker-info";
-import {
-  AssetsInfoApi,
-  CashflowInfoApi,
-  CommonDataApi,
-  ShareInfoApi,
-  TickerInfoApi,
-} from "./ticker-info.api-model";
 
 export function mapTickerInfoApiToDm(
-  tickerInfo: TickerInfoApi[],
+  tickerInfo: PnlInfoApi[],
   sharesInfo: ShareInfoApi[],
   assetsInfo: AssetsInfoApi[],
   cashflowInfo: CashflowInfoApi[],

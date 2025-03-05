@@ -1,8 +1,9 @@
-import { getTickers } from "@/app/actions/get-tickers";
+import { getCompanies } from "@/app/actions/get-companies";
+
 import { Search } from "./search";
 
 export const SearchServer = async () => {
-  const companies = await getTickers();
+  const companies = await getCompanies();
 
   return (
     <Search

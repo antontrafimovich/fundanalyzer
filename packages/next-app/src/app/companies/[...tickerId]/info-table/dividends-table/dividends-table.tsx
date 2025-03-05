@@ -1,8 +1,8 @@
-import { getDividendsData, getTickerInfo } from "../../api/ticker-info.api";
+import { getTickerDividendsData, getTickerInfo } from "../../api/ticker-info.api";
 import { DividendsTableClient } from "./ui/dividends-table-client";
 
 export const DividendsTable = async ({ tickerId }: { tickerId: string }) => {
-  const dividends = await getDividendsData(tickerId);
+  const dividends = await getTickerDividendsData(tickerId);
   const tickerInfo = (await getTickerInfo(tickerId))!;
 
   const last4YarsMiddlePrice =

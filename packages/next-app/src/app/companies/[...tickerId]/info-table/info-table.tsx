@@ -1,13 +1,13 @@
-import { getTickers } from "@/app/actions/get-tickers";
-import { CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getCompanies } from '@/app/actions/get-companies';
+import { CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-import { Panel } from "../ui/panel/panel";
-import { CommonDataTable } from "./common-data-table/common-data-table";
-import { DividendsTable } from "./dividends-table/dividends-table";
+import { Panel } from '../ui/panel/panel';
+import { CommonDataTable } from './common-data-table/common-data-table';
+import { DividendsTable } from './dividends-table/dividends-table';
 
 export default async function InfoTable({ tickerId }: { tickerId: string }) {
-  const companies = await getTickers();
+  const companies = await getCompanies();
 
   const company = companies.find((company) => company.ut === tickerId)!;
 

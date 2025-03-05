@@ -5,6 +5,9 @@ import { createReadStream } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import path from "node:path";
 
+import { getCommonData, getDividendsData, getData } from "./actions";
+import { getCompanies } from "../../next-app/src/app/actions/get-companies";
+
 const domain = process.env.DOMAIN;
 
 const profitAndLossPageRoute = process.env.PROFIT_AND_LOSS_PAGE_ROUTE;
@@ -23,94 +26,12 @@ async function fetchAndParseHTML(url) {
   return dom;
 }
 
-const getData = async (url) => {
-  const document = await fetchAndParseHTML(url);
-
-  const years = document
-    .querySelectorAll(".report-table th")
-    .map((i) => i.firstChild.textContent.trim())
-    .filter(Boolean);
-
-  const metricRows = document.querySelectorAll(".report-table tr").slice(1);
-
-  let fiancialDataPerYear = years.map((year) => ({ year }));
-
-  for (let i = 0; i < metricRows.length; i++) {
-    const metricRow = metricRows[i];
-    const metricName = metricRow.querySelector("td.f").innerText.trim();
-
-    const metricValuesCells = metricRow.querySelectorAll("td").slice(1, -1);
-
-    fiancialDataPerYear.forEach((data, index) => {
-      const metricValue = metricValuesCells[index].querySelector(".value");
-
-      if (!metricValue) {
-        data[metricName] = "";
-        return;
-      }
-
-      data[metricName] = metricValue.textContent.trim();
-    });
-  }
-
-  return fiancialDataPerYear;
-};
-
-const getCommonData = async (company) => {
-  const fetchUrl = `${domain}/${commonDataPageRoute}/${company}`;
-  const document = await fetchAndParseHTML(fetchUrl);
-  const currentPrice = document.querySelector(".q_ch_act").innerText.trim();
-  const companyDescription = document
-    .querySelector(".profileDesc > p > .hidden")
-    .innerText.trim();
-  const website = document
-    .querySelector(".profileSummary.hidden > tr:last-child a")
-    .innerText.trim();
-
-  return { currentPrice, companyDescription, website };
-};
-
-const getDividendsData = async (company) => {
-  const fetchUrl = `${domain}/${dividendsDataPageRoute}/${company}`;
-  const document = await fetchAndParseHTML(fetchUrl);
-
-  const rows = document.querySelectorAll(".table-c > table > tr")?.slice(1);
-  const result = [];
-
-  for (let i = 0; i < rows.length; i++) {
-    const row = rows[i];
-    const [yearItem, , , dividendsItem] = row.querySelectorAll("td");
-    const year = yearItem?.innerText.trim();
-    const dividend = dividendsItem.innerText.trim();
-
-    result.push({
-      year,
-      dividends: isNaN(Number(dividend.split(" ").join("")))
-        ? 0
-        : Number(dividend.split(" ").join("")),
-    });
-  }
-
-  return result;
-};
-
 const server = createServer(async (req, res) => {
   const urlParts = req.url.split("/");
   const [, segment, payload] = urlParts;
 
   if (req.method === "GET" && segment === "companies") {
-    const __dirname = import.meta.dirname;
-    const r = createReadStream(path.resolve(__dirname, "tickers.json"));
-
-    try {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      await pipeline(r, res);
-    } catch (error) {
-      console.error(error.message);
-      res.writeHead(500, { "Content-Type": "text/plain" });
-      res.end(error.message);
-    }
-
+    await getCompanies(res);
     return;
   }
 
