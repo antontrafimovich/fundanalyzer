@@ -1,5 +1,5 @@
-import { AssetsInfoApi } from "../companies/[...tickerId]/api/ticker-info.api-model";
+import { AssetsInfoApi } from "../actions/get-assets";
 
 export type AssetsInfo = {
-  [T in keyof AssetsInfoApi]: number;
+  [T in Exclude<keyof AssetsInfoApi, "year">]: number;
 };
