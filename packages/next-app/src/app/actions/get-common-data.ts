@@ -11,6 +11,7 @@ export async function getCommonData(company: string): Promise<CommonDataApi> {
 
   try {
     const fetchUrl = `${domain}/${commonDataPageRoute}/${company}`;
+    console.log("common data fetchUrl", fetchUrl);
     const document = await fetchAndParseHTML(fetchUrl);
 
     const getElementText = (selector: string) => {
@@ -22,7 +23,11 @@ export async function getCommonData(company: string): Promise<CommonDataApi> {
     const companyDescription = getElementText(".profileDesc > p > .hidden");
     const website = getElementText(".profileSummary.hidden > tr:last-child a");
 
-    return { currentPrice: currentPrice || "N/A", companyDescription: companyDescription || "N/A", website: website || "N/A" };
+    return {
+      currentPrice: currentPrice || "N/A",
+      companyDescription: companyDescription || "N/A",
+      website: website || "N/A",
+    };
   } catch (error) {
     console.error(`Failed to fetch common data for ${company}:`, error);
     return { currentPrice: "N/A", companyDescription: "N/A", website: "N/A" };
