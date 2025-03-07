@@ -12,6 +12,7 @@
   },
   "keywords": [],
   "author": "",
+  "packageManager": "pnpm@9.5.0",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^9.0.1"
