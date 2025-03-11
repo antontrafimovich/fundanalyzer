@@ -1,7 +1,6 @@
 "use client";
 
-import { useLocalStorage } from "@/components/hooks/use-local-storage";
-import { useRouter } from "next/navigation";
+import { useLocalStorage } from '@/components/hooks/use-local-storage';
 
 export function useTabs({
   onCloseTab,
