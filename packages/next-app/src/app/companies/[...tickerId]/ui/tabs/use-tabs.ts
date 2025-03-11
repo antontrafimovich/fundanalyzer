@@ -7,11 +7,8 @@ export function useTabs({
   onCloseTab,
 }: { onCloseTab?: (tab: string, tabs: string[]) => void } = {}) {
   const [tabs, setTabs] = useLocalStorage<string[]>("tabs", []);
-  const router = useRouter();
 
   const appendTab = (tab: string) => {
-    router.push(`/companies/${tab}`);
-
     setTabs((prev) => Array.from(new Set([...prev, tab])));
   };
 

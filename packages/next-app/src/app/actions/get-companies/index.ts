@@ -1,12 +1,13 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from "node:url";
+import { unstable_cache } from "next/cache";
 
 import { Company } from "../../model/company";
 
-export async function getCompanies(): Promise<Company[]> {
+async function getCompaniesInner(): Promise<Company[]> {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  
+  console.log('loading companies')
   try {
     const r = await readFile(path.resolve(__dirname, "tickers.json"), {
       encoding: "utf-8",
@@ -18,3 +19,5 @@ export async function getCompanies(): Promise<Company[]> {
     return [];
   }
 }
+
+export const getCompanies = unstable_cache(() => getCompaniesInner(), ['companies']);
