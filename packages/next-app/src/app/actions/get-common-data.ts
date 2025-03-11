@@ -11,7 +11,6 @@ export async function getCommonData(company: string): Promise<CommonDataApi> {
 
   try {
     const fetchUrl = `${domain}/${commonDataPageRoute}/${company}`;
-    console.log("common data fetchUrl", fetchUrl);
     const document = await fetchAndParseHTML(fetchUrl);
 
     const getElementText = (selector: string) => {

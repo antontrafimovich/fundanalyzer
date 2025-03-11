@@ -1,21 +1,20 @@
-import { Card, CardTitle } from '@/components/ui/card';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { Suspense } from 'react';
+import { Card, CardTitle } from "@/components/ui/card";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Suspense } from "react";
 
-import { getTickerInfo } from './api/ticker-info.api';
-import CashflowChart from './cashflow-chart/cashflow-chart';
-import InfoTable from './info-table/info-table';
-import LiabilitiesChart from './liabilities-chart/liabilities-chart';
-import RevenueChart from './revenue-chart/revenue-chart';
-import ReturnChart from './roe-chart/roe-chart';
-import { ResizableChartLayout } from './ui/chart-layout/resizable-chart-layout';
-import { Panel } from './ui/panel/panel';
-import { AppSidebar } from './ui/sidebar/sidebar';
-
-// export async function generateStaticParams() {
-//   return [{ tickerId: ["CD-PROJEKT"] }];
-// }
+import CashflowChart from "./cashflow-chart/cashflow-chart";
+import InfoTable from "./info-table/info-table";
+import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
+import RevenueChart from "./revenue-chart/revenue-chart";
+import ReturnChart from "./roe-chart/roe-chart";
+import { ResizableChartLayout } from "./ui/chart-layout/resizable-chart-layout";
+import { Panel } from "./ui/panel/panel";
+import { AppSidebar } from "./ui/sidebar/sidebar";
 
 export default async function Page({
   params,
@@ -24,15 +23,13 @@ export default async function Page({
 }) {
   const [tickerId] = (await params).tickerId ?? [];
 
-  if (!tickerId || tickerId === '_') {
+  if (!tickerId || tickerId === "_") {
     return (
       <Card className="flex flex-1 items-center justify-center min-h-0 font-bold border-t-0 border-border rounded-tl-none border-l-0">
         Please select a company from the search or open one of the tabs
       </Card>
     );
   }
-
-  await getTickerInfo(tickerId);
 
   return (
     <SidebarProvider className="min-h-0 flex-1">

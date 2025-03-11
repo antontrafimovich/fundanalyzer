@@ -6,7 +6,7 @@ import { Company } from "../../model/company";
 
 export async function getCompanies(): Promise<Company[]> {
   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  console.log(__dirname);
+  
   try {
     const r = await readFile(path.resolve(__dirname, "tickers.json"), {
       encoding: "utf-8",

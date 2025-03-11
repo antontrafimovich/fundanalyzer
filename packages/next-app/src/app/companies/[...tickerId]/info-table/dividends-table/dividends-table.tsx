@@ -1,4 +1,7 @@
-import { getTickerDividendsData, getTickerInfo } from "../../api/ticker-info.api";
+import {
+  getTickerDividendsData,
+  getTickerInfo,
+} from "../../api/ticker-info.api";
 import { DividendsTableClient } from "./ui/dividends-table-client";
 
 export const DividendsTable = async ({ tickerId }: { tickerId: string }) => {
@@ -10,8 +13,6 @@ export const DividendsTable = async ({ tickerId }: { tickerId: string }) => {
       .slice(0, 4)
       .map((year) => year["Kurs"])
       .reduce((a, b) => a + b, 0) / 4;
-
-  console.log('dividends list', dividends);
 
   const data = dividends.map((dividend, index) => {
     const tickerInfoForYear = tickerInfo.yearToYearData.at((index + 1) * -1);
