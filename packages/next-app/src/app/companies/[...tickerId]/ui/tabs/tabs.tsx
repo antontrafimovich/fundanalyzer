@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Tabs as ShadcnTabs,
   TabsList,
@@ -8,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { useTabs } from "./use-tabs";
 import { useEffect } from "react";
+import Link from "next/link";
 
 export const Tabs = ({ active }: { active: string | undefined }) => {
   const router = useRouter();
@@ -41,21 +43,23 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
     <ShadcnTabs
       defaultValue={active}
       className="w-[400px]"
-      onValueChange={(value) => {
-        router.push(`/companies/${value}`);
-      }}
+      // onValueChange={(value) => {
+      //   // router.push(`/companies/${value}`);
+      // }}
     >
       <TabsList className="bg-transparent pb-0 items-end pl-0">
         {tabs.map((tab) => (
           <TabsTrigger
-            className="border-b-ra rounded-b-none hover:bg-border min-w-32 flex justify-between"
+            className="p-0 border-b-ra flex rounded-b-none hover:bg-border min-w-32 justify-between"
             key={tab}
             value={tab}
           >
-            {tab}
+            <Link className="pl-3 pr-2 py-1 flex-1 text-left" href={`/companies/${tab}`}>
+              {tab}
+            </Link>
 
             <span
-              className="ml-2 hover:bg-slate-100 inline-flex items-center justify-center size-5 rounded-sm"
+              className="mr-2 hover:bg-slate-100 inline-flex items-center justify-center size-5 rounded-sm"
               onClick={(e) => {
                 e.stopPropagation();
                 closeTab(tab);

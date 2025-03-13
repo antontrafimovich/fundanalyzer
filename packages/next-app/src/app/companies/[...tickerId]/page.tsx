@@ -33,7 +33,9 @@ export default async function Page({
 
   return (
     <SidebarProvider className="min-h-0 flex-1">
-      <AppSidebar tickerId={tickerId} />
+      <Suspense fallback={<>Loading Sidebar...</>}>
+        <AppSidebar tickerId={tickerId} />
+      </Suspense>
       <main className="flex-1 min-w-0 relative">
         <div className="absolute w-[30px] flex items-center justify-center h-[60px] rounded-2xl bg-[#f9fafb] cursor-pointer border border-[#e7e7e9] left-[-15px] z-50 bottom-0 top-0 m-[auto]">
           <SidebarTrigger />

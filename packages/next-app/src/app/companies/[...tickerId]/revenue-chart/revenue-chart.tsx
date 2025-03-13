@@ -18,7 +18,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default async function RevenueChart({ tickerId }: { tickerId: string }) {
+  
+  // Measure getTickerInfo() performance
+  const startTime = performance.now();
   const data = await getTickerInfo(tickerId);
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+  console.log(`Performance measurement - getTickerInfo() execution time: ${executionTime.toFixed(2)}ms`);
 
   const chartData = data!.yearToYearData
     .map((row, index, y2yData) => {

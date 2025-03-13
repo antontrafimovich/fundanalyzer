@@ -7,7 +7,13 @@ import { CommonDataTable } from './common-data-table/common-data-table';
 import { DividendsTable } from './dividends-table/dividends-table';
 
 export default async function InfoTable({ tickerId }: { tickerId: string }) {
+  
+  // Measure getCompanies() performance
+  const startTime = performance.now();
   const companies = await getCompanies();
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+  console.log(`Performance measurement - getCompanies() execution time: ${executionTime.toFixed(2)}ms`);
 
   const company = companies.find((company) => company.ut === tickerId)!;
 
