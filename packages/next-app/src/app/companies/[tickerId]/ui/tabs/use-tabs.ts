@@ -1,11 +1,13 @@
 "use client";
 
-import { useLocalStorage } from '@/components/hooks/use-local-storage';
+import { useLocalStorage } from "@/components/hooks/use-local-storage";
 
 export function useTabs({
   onCloseTab,
 }: { onCloseTab?: (tab: string, tabs: string[]) => void } = {}) {
-  const [tabs, setTabs] = useLocalStorage<string[]>("tabs", []);
+  const [tabs, setTabs] = useLocalStorage<string[]>("tabs", [], {
+    initializeWithValue: false,
+  });
 
   const appendTab = (tab: string) => {
     setTabs((prev) => Array.from(new Set([...prev, tab])));

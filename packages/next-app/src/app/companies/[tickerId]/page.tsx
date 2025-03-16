@@ -21,7 +21,7 @@ export default async function Page({
 }: {
   params: Promise<{ tickerId: string }>;
 }) {
-  const [tickerId] = (await params).tickerId ?? [];
+  const tickerId = (await params).tickerId;
 
   if (!tickerId || tickerId === "_") {
     return (

@@ -1,18 +1,15 @@
 "use client";
 
-import {
-  Tabs as ShadcnTabs,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import classNames from "classnames";
 
 import { useTabs } from "./use-tabs";
-import { useEffect } from "react";
-import Link from "next/link";
 
 export const Tabs = ({ active }: { active: string | undefined }) => {
   const router = useRouter();
+  const params = useParams<{ tickerId: string }>();
 
   const { tabs, closeTab, appendTab } = useTabs({
     onCloseTab: (tab, tabs) => {
@@ -40,21 +37,33 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
   }, []);
 
   return (
-    <ShadcnTabs
-      defaultValue={active}
-      className="w-[400px]"
-      // onValueChange={(value) => {
-      //   // router.push(`/companies/${value}`);
-      // }}
-    >
-      <TabsList className="bg-transparent pb-0 items-end pl-0">
-        {tabs.map((tab) => (
-          <TabsTrigger
-            className="p-0 border-b-ra flex rounded-b-none hover:bg-border min-w-32 justify-between"
+    <ul className="pr-1 flex list list-none gap-0" role="tablist">
+      {tabs.map((tab) => {
+        const isActive = tab === params.tickerId;
+        return (
+          <li
+            className={classNames(
+              "p-0",
+              "flex",
+              "rounded-b-none",
+              "min-w-32",
+              "items-center",
+              "text-sm",
+              "font-medium",
+              "justify-between",
+              "rounded-md",
+              { "bg-background": isActive },
+              { "text-foreground": isActive },
+              { "shadow-sm": isActive },
+              { "hover:bg-border": !isActive }
+            )}
             key={tab}
             value={tab}
           >
-            <Link className="pl-3 pr-2 py-1 flex-1 text-left" href={`/companies/${tab}`}>
+            <Link
+              className="pl-3 pr-2 py-1 flex-1 text-left"
+              href={`/companies/${tab}`}
+            >
               {tab}
             </Link>
 
@@ -74,9 +83,9 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
                 <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
               </svg>
             </span>
-          </TabsTrigger>
-        ))}
-      </TabsList>
-    </ShadcnTabs>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
