@@ -1,11 +1,10 @@
 "use client";
 
+import { useTabs } from "@/app/companies/utils/use-tabs";
+import classNames from "classnames";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import classNames from "classnames";
-
-import { useTabs } from "./use-tabs";
 
 export const Tabs = ({ active }: { active: string | undefined }) => {
   const router = useRouter();
@@ -37,7 +36,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
   }, []);
 
   return (
-    <ul className="pr-1 flex list list-none gap-0" role="tablist">
+    <ul className="pr-1 h-[28px] flex list list-none gap-0" role="tablist">
       {tabs.map((tab) => {
         const isActive = tab === params.tickerId;
         return (
@@ -61,7 +60,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
             value={tab}
           >
             <Link
-              className="pl-3 pr-2 py-1 flex-1 text-left"
+              className="pl-3 pr-2 py-1 flex-1 text-ellipsis overflow-hidden whitespace-nowrap text-left"
               href={`/companies/${tab}`}
             >
               {tab}
