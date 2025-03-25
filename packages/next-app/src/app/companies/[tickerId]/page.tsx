@@ -1,21 +1,17 @@
-import { Card, CardTitle } from "@/components/ui/card";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Suspense } from "react";
+import { Card, CardTitle } from '@/components/ui/card';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Suspense } from 'react';
 
-import CashflowChart from "./cashflow-chart/cashflow-chart";
-import InfoTable from "./info-table/info-table";
-import LiabilitiesChart from "./liabilities-chart/liabilities-chart";
-import RevenueChart from "./revenue-chart/revenue-chart";
-import ReturnChart from "./roe-chart/roe-chart";
-import { ResizableChartLayout } from "./ui/chart-layout/resizable-chart-layout";
-import { Panel } from "./ui/panel/panel";
-import { AppSidebar } from "./ui/sidebar/sidebar";
-import { Skeleton } from "@/components/ui/skeleton";
+import CashflowChart from './cashflow-chart/cashflow-chart';
+import InfoTable from './info-table/info-table';
+import LiabilitiesChart from './liabilities-chart/liabilities-chart';
+import RevenueChart from './revenue-chart/revenue-chart';
+import ReturnChart from './roe-chart/roe-chart';
+import { ResizableBaseLayout } from './ui/base-layout/resizable-base-layout';
+import { ResizableChartLayout } from './ui/chart-layout/resizable-chart-layout';
+import { Panel } from './ui/panel/panel';
+import { AppSidebar } from './ui/sidebar/sidebar';
 
 function LoadingTable() {
   return <Skeleton className="w-1/4 h-6" />;
@@ -47,17 +43,15 @@ export default async function Page({
         </div>
 
         <Card className="flex flex-1 min-h-0 border-t-0 h-full border-border rounded-tl-none rounded-bl-none border-l-0">
-          <ResizablePanelGroup direction="horizontal" className="size-full">
-            <ResizablePanel defaultSize={40} className="flex flex-col">
-              <Suspense fallback={<LoadingTable />}>
+          <ResizableBaseLayout
+            blocks={[
+              <Suspense fallback={<LoadingTable />} key={0}>
                 <InfoTable tickerId={tickerId} />
-              </Suspense>
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={60} className="flex flex-col">
+              </Suspense>,
               <ResizableChartLayout
+                key={1}
                 blocks={[
-                  <Suspense fallback={<LoadingTable/>} key={0}>
+                  <Suspense fallback={<LoadingTable />} key={0}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Revenue Chart</CardTitle>
@@ -67,10 +61,7 @@ export default async function Page({
                       </Panel.Content>
                     </Panel>
                   </Suspense>,
-                  <Suspense
-                    fallback={<LoadingTable/>}
-                    key={1}
-                  >
+                  <Suspense fallback={<LoadingTable />} key={1}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Liabilities Chart</CardTitle>
@@ -80,7 +71,7 @@ export default async function Page({
                       </Panel.Content>
                     </Panel>
                   </Suspense>,
-                  <Suspense fallback={<LoadingTable/>} key={2}>
+                  <Suspense fallback={<LoadingTable />} key={2}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Profitability Chart</CardTitle>
@@ -90,7 +81,7 @@ export default async function Page({
                       </Panel.Content>
                     </Panel>
                   </Suspense>,
-                  <Suspense fallback={<LoadingTable/>} key={3}>
+                  <Suspense fallback={<LoadingTable />} key={3}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Cashflow Chart</CardTitle>
@@ -101,9 +92,9 @@ export default async function Page({
                     </Panel>
                   </Suspense>,
                 ]}
-              />
-            </ResizablePanel>
-          </ResizablePanelGroup>
+              />,
+            ]}
+          />
         </Card>
       </main>
     </SidebarProvider>
