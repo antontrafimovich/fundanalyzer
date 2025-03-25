@@ -3,12 +3,11 @@
 import { useTabs } from "@/app/companies/utils/use-tabs";
 import classNames from "classnames";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const Tabs = ({ active }: { active: string | undefined }) => {
   const router = useRouter();
-  const params = useParams<{ tickerId: string }>();
 
   const { tabs, closeTab, appendTab } = useTabs({
     onCloseTab: (tab, tabs) => {
@@ -38,7 +37,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
   return (
     <ul className="pr-1 h-[28px] flex list list-none gap-0" role="tablist">
       {tabs.map((tab) => {
-        const isActive = tab === params.tickerId;
+        const isActive = tab === active;
         return (
           <li
             className={classNames(
@@ -67,7 +66,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
             </Link>
 
             <span
-              className="mr-2 hover:bg-slate-100 inline-flex items-center justify-center size-5 rounded-sm"
+              className="mr-2 hover:bg-slate-100 inline-flex cursor-pointer items-center justify-center size-5 rounded-sm"
               onClick={(e) => {
                 e.stopPropagation();
                 closeTab(tab);

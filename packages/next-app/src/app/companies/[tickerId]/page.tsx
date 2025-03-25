@@ -15,6 +15,11 @@ import ReturnChart from "./roe-chart/roe-chart";
 import { ResizableChartLayout } from "./ui/chart-layout/resizable-chart-layout";
 import { Panel } from "./ui/panel/panel";
 import { AppSidebar } from "./ui/sidebar/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function LoadingTable() {
+  return <Skeleton className="w-1/4 h-6" />;
+}
 
 export default async function Page({
   params,
@@ -44,7 +49,7 @@ export default async function Page({
         <Card className="flex flex-1 min-h-0 border-t-0 h-full border-border rounded-tl-none rounded-bl-none border-l-0">
           <ResizablePanelGroup direction="horizontal" className="size-full">
             <ResizablePanel defaultSize={40} className="flex flex-col">
-              <Suspense fallback={<>Loading Data Table...</>}>
+              <Suspense fallback={<LoadingTable />}>
                 <InfoTable tickerId={tickerId} />
               </Suspense>
             </ResizablePanel>
@@ -52,7 +57,7 @@ export default async function Page({
             <ResizablePanel defaultSize={60} className="flex flex-col">
               <ResizableChartLayout
                 blocks={[
-                  <Suspense fallback={<>Loading Revenue Chart...</>} key={0}>
+                  <Suspense fallback={<LoadingTable/>} key={0}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Revenue Chart</CardTitle>
@@ -63,7 +68,7 @@ export default async function Page({
                     </Panel>
                   </Suspense>,
                   <Suspense
-                    fallback={<>Loading Liabilities Chart...</>}
+                    fallback={<LoadingTable/>}
                     key={1}
                   >
                     <Panel>
@@ -75,7 +80,7 @@ export default async function Page({
                       </Panel.Content>
                     </Panel>
                   </Suspense>,
-                  <Suspense fallback={<>Loading Return Chart...</>} key={2}>
+                  <Suspense fallback={<LoadingTable/>} key={2}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Profitability Chart</CardTitle>
@@ -85,7 +90,7 @@ export default async function Page({
                       </Panel.Content>
                     </Panel>
                   </Suspense>,
-                  <Suspense fallback={<>Loading Cashflow Chart...</>} key={3}>
+                  <Suspense fallback={<LoadingTable/>} key={3}>
                     <Panel>
                       <Panel.Header>
                         <CardTitle>Cashflow Chart</CardTitle>

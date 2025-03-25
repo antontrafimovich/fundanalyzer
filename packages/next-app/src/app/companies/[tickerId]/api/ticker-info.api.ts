@@ -7,10 +7,14 @@ import { getPnl } from "../../../actions/get-pnl";
 import { getShares } from "../../../actions/get-shares";
 import { mapTickerInfoApiToDm } from "./ticker-info.api-mapper";
 
-export async function getTickerDividendsData(tickerId: string) {
+async function getTickerDividendsDataInner(tickerId: string) {
   const dividendsData = await getDividendsData(tickerId);
   return dividendsData.slice(0, 11);
 }
+
+export const getTickerDividendsData = unstable_cache((tickerId: string) =>
+  getTickerDividendsDataInner(tickerId)
+);
 
 async function getTickerInfoInner(tickerId: string) {
   const [tickerInfo, sharesResponse, assetsInfo, cashflowInfo, commonData] =
