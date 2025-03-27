@@ -19,7 +19,7 @@ export const ResizableBaseLayout = ({
   useEffect(() => {
     // Function to check screen width
     const checkScreenWidth = () => {
-      setIsWideScreen(window.innerWidth > 1200);
+      setIsWideScreen(window.innerWidth > 900);
     };
 
     // Check initially
