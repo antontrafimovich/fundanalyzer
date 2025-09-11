@@ -8,9 +8,18 @@ export type CommonDataTableProps = {
 export const CommonDataTable = async ({ ticker }: CommonDataTableProps) => {
   const data = await getTickerInfo(ticker);
 
+  if (!data || !data.yearToYearData || data.yearToYearData.length === 0) {
+    console.warn(`No data available for ticker &quot;${ticker}&quot;. Check application logic or data source.`);
+    return (
+      <div className="flex items-center justify-center h-32 text-red-500 font-semibold">
+        No data available for ticker &quot;{ticker}&quot;. This may indicate an issue with the application logic or data source.
+      </div>
+    );
+  }
+
   return (
     <CommonDataTableClient
-      data={data!.yearToYearData}
+      data={data.yearToYearData}
       boldKeys={[
         "Przychody ze sprzedaży",
         "Zysk ze sprzedaży",

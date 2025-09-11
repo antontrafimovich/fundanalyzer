@@ -16,9 +16,12 @@ export function mapTickerInfoApiToDm(
   cashflowInfo: CashflowInfoApi[],
   commonData: CommonDataApi
 ): TickerInfo {
+  const sharesInfoFiltered = sharesInfo.filter(
+    (item) => item && item["Liczba akcji"] && item["Kurs"]
+  );
   const sharesMap: {
     [key: string]: ShareInfo;
-  } = sharesInfo.reduce((result, item) => {
+  } = sharesInfoFiltered.reduce((result, item) => {
     const [year] = item.year.split("/");
     const price = Number(item["Kurs"].split(",").join("."));
     const count = Number(item["Liczba akcji"].split(" ").join(""));
@@ -26,49 +29,54 @@ export function mapTickerInfoApiToDm(
     return { ...result, [year]: { Kurs: price, "Liczba akcji": count } };
   }, {});
 
-  const assetsInfoList = assetsInfo.map<AssetsInfo>((item) => {
-    const assets = Number(item["Aktywa razem"].split(" ").join(""));
-    const equity = Number(
-      item["Kapitał własny akcjonariuszy jednostki dominującej"]
-        .split(" ")
-        .join("")
-    );
-    const currentLiabilities = Number(
-      item["Zobowiązania krótkoterminowe"].split(" ").join("")
-    );
-    const nonCurrentLiabilities = Number(
-      item["Zobowiązania długoterminowe"].split(" ").join("")
-    );
+  const assetsInfoList = assetsInfo
+    .filter((item) => item)
+    .map<AssetsInfo>((item) => {
+      const assets = Number(item["Aktywa razem"].split(" ").join(""));
+      const equity = Number(
+        item["Kapitał własny akcjonariuszy jednostki dominującej"]
+          .split(" ")
+          .join("")
+      );
+      const currentLiabilities = Number(
+        item["Zobowiązania krótkoterminowe"].split(" ").join("")
+      );
+      const nonCurrentLiabilities = Number(
+        item["Zobowiązania długoterminowe"].split(" ").join("")
+      );
 
-    return {
-      "Aktywa razem": assets,
-      "Kapitał własny akcjonariuszy jednostki dominującej": equity,
-      "Zobowiązania długoterminowe": nonCurrentLiabilities,
-      "Zobowiązania krótkoterminowe": currentLiabilities,
-    };
-  }, {});
+      return {
+        "Aktywa razem": assets,
+        "Kapitał własny akcjonariuszy jednostki dominującej": equity,
+        "Zobowiązania długoterminowe": nonCurrentLiabilities,
+        "Zobowiązania krótkoterminowe": currentLiabilities,
+      };
+    }, {});
 
-  const cashflowInfoList = cashflowInfo.map<CashflowInfo>((item) => {
-    const finCashflow = Number(
-      item["Przepływy pieniężne z działalności finansowej"].split(" ").join("")
-    );
-    const investCashflow = Number(
-      item["Przepływy pieniężne z działalności inwestycyjnej"]
-        .split(" ")
-        .join("")
-    );
-    const operationalCashflow = Number(
-      item["Przepływy pieniężne z działalności operacyjnej"].split(" ").join("")
-    );
+  const cashflowInfoList = cashflowInfo
+    .filter((item) => item)
+    .map<CashflowInfo>((item) => {
+      const finCashflow = Number(
+        item["Przepływy pieniężne z działalności finansowej"].split(" ").join("")
+      );
+      const investCashflow = Number(
+        item["Przepływy pieniężne z działalności inwestycyjnej"]
+          .split(" ")
+          .join("")
+      );
+      const operationalCashflow = Number(
+        item["Przepływy pieniężne z działalności operacyjnej"].split(" ").join("")
+      );
 
-    return {
-      "Przepływy pieniężne z działalności finansowej": finCashflow,
-      "Przepływy pieniężne z działalności inwestycyjnej": investCashflow,
-      "Przepływy pieniężne z działalności operacyjnej": operationalCashflow,
-    };
-  }, {});
+      return {
+        "Przepływy pieniężne z działalności finansowej": finCashflow,
+        "Przepływy pieniężne z działalności inwestycyjnej": investCashflow,
+        "Przepływy pieniężne z działalności operacyjnej": operationalCashflow,
+      };
+    }, {});
 
   const yToYData = tickerInfo
+    .filter((item) => item)
     .map((row, index) => {
       const sharesRow =
         sharesMap[index === tickerInfo.length - 1 ? "2024" : row.year];
@@ -88,17 +96,25 @@ export function mapTickerInfoApiToDm(
           } as TickerInfo;
         }
 
+        const value = row[key];
+        if (!value) {
+          return {
+            ...acc,
+            [key]: 0,
+          };
+        }
+
         return {
           ...acc,
-          [key]: Number(row[key].split(" ").join("")),
+          [key]: Number(value.split(" ").join("")),
         };
       }, {} as TickerInfo);
 
       return {
-        ...sharesRow,
+        ...(sharesRow || {}),
         ...mappedRow,
-        ...assetsRow,
-        ...cashflowRow,
+        ...(assetsRow || {}),
+        ...(cashflowRow || {}),
       } as unknown as TickerYearInfo;
     })
     .slice(Math.max(tickerInfo.length - 11, 0));

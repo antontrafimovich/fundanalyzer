@@ -35,7 +35,6 @@ export const Search = ({ items }: SearchProps) => {
           className="flex h-9 w-3/5 max-w-2xl rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
           value={term}
           onChange={(event) => {
-            console.log(event.target.value);
             setTerm(event.target.value);
           }}
         />

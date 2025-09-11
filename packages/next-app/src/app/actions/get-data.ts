@@ -12,7 +12,7 @@ export async function getData<T extends FinancialData>(
 
   const years = document
     .querySelectorAll(".report-table th")
-    .map((i) => i.firstChild!.textContent.trim())
+    .map((i) => i.firstChild?.textContent?.trim() || "")
     .filter(Boolean);
 
   const metricRows = document.querySelectorAll(".report-table tr").slice(1);
@@ -21,12 +21,12 @@ export async function getData<T extends FinancialData>(
 
   for (let i = 0; i < metricRows.length; i++) {
     const metricRow = metricRows[i];
-    const metricName = metricRow.querySelector("td.f")!.innerText.trim();
+    const metricName = metricRow.querySelector("td.f")?.innerText?.trim() || "";
 
     const metricValuesCells = metricRow.querySelectorAll("td").slice(1, -1);
 
     financialData.forEach((data, index) => {
-      const metricValue = metricValuesCells[index].querySelector(".value");
+      const metricValue = metricValuesCells[index]?.querySelector(".value");
 
       if (!metricValue) {
         (data as Record<string, string>)[metricName] = "";
@@ -34,7 +34,7 @@ export async function getData<T extends FinancialData>(
       }
 
       (data as Record<string, string>)[metricName] =
-        metricValue.textContent!.trim();
+        metricValue.textContent?.trim() || "";
     });
   }
 

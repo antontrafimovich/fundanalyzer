@@ -34,8 +34,6 @@ export type ChartProps = {
 export default function Chart({ chartConfig, chartData }: ChartProps) {
   const [loading, setIsLoading] = useState(true);
 
-  console.log(loading);
-
   return (
     <>
       {loading && (

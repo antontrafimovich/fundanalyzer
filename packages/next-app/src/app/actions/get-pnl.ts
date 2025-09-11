@@ -12,7 +12,6 @@ export async function getPnl(tickerId: string): Promise<PnlInfoApi[]> {
   try {
     const fetchUrl = `${domain}/${profitAndLossPageRoute}/${tickerId}`;
     const data = await getData(fetchUrl);
-    console.log('pnl data', data)
     return data;
   } catch (error) {
     console.error(`Failed to fetch profit and loss data for ${tickerId}:`, error);
