@@ -40,6 +40,7 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
         const isActive = tab === active;
         return (
           <li
+            key={tab}
             className={classNames(
               "p-0",
               "flex",
@@ -55,7 +56,6 @@ export const Tabs = ({ active }: { active: string | undefined }) => {
               { "shadow-sm": isActive },
               { "hover:bg-border": !isActive }
             )}
-            key={tab}
             value={tab}
           >
             <Link

@@ -3,7 +3,7 @@ import { fetchAndParseHTML } from "./fetch-and-parse-html";
 type FinancialData = {
   year: string;
   [key: string]: string;
-} & Record<string, string>;
+};
 
 export async function getData<T extends FinancialData>(
   url: string
@@ -21,7 +21,7 @@ export async function getData<T extends FinancialData>(
 
   for (let i = 0; i < metricRows.length; i++) {
     const metricRow = metricRows[i];
-    const metricName = metricRow.querySelector("td.f")?.innerText?.trim() || "";
+    const metricName = metricRow.querySelector("td.f")?.textContent?.trim() || "";
 
     const metricValuesCells = metricRow.querySelectorAll("td").slice(1, -1);
 

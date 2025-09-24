@@ -1,20 +1,18 @@
 import { getData } from "./get-data";
-
-export type AssetsInfoApi = {
-  year: string;
-  "Aktywa razem": string;
-  "Kapitał własny akcjonariuszy jednostki dominującej": string;
-  "Zobowiązania krótkoterminowe": string;
-  "Zobowiązania długoterminowe": string;
-};
+import { AssetsInfoApi, AssetsInfoApiSchema, TickerIdSchema } from "../../lib/schemas";
 
 export async function getAssets(tickerId: string): Promise<AssetsInfoApi[]> {
+  // Validate tickerId
+  TickerIdSchema.parse(tickerId);
+
   const domain = process.env.DOMAIN;
   const balanceReportPageRoute = process.env.BALANCE_REPORT_PAGE_ROUTE;
 
   try {
     const fetchUrl = `${domain}/${balanceReportPageRoute}/${tickerId}`;
-    return await getData(fetchUrl);
+    const data = await getData(fetchUrl);
+    // Validate the data
+    return data.map(item => AssetsInfoApiSchema.parse(item));
   } catch (error) {
     console.error(`Failed to fetch assets data for ${tickerId}:`, error);
     return [];

@@ -8,7 +8,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useEffect } from "react";
 import {
   Bar,
   BarChart,
@@ -31,13 +30,6 @@ export type ChartProps = {
 };
 
 export default function Chart({ chartConfig, chartData }: ChartProps) {
-  useEffect(() => {
-    console.log("Cashflow chart loaded");
-    return () => {
-      console.log("Cashflow chart unmounted");
-    };
-  }, []);
-
   return (
     <ChartContainer config={chartConfig} className="size-full">
       <BarChart stackOffset="sign" data={chartData}>
